@@ -214,3 +214,452 @@
   </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atlas Assessments</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --navy: #192b43;
+      --blue: #3478d4;
+      --muted: #718096;
+      --border: #e2e8f0;
+      --bg: #f6f8fb;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: var(--navy);
+      background: var(--bg);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 8%;
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo span { color: var(--blue); }
+
+    .tag {
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--muted);
+    }
+
+    main {
+      max-width: 1000px;
+      margin: auto;
+      padding: 55px 24px 75px;
+      min-height: 75vh;
+    }
+
+    .eyebrow {
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(36px, 6vw, 58px);
+      line-height: 1.12;
+      letter-spacing: -2px;
+      margin: 16px 0;
+    }
+
+    h2 { font-size: 26px; }
+
+    p {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .hero { max-width: 680px; }
+
+    .primary, .secondary, .subject, .grade {
+      font: inherit;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .primary {
+      border: 0;
+      border-radius: 9px;
+      background: var(--blue);
+      color: white;
+      padding: 14px 22px;
+      font-weight: bold;
+      margin-top: 14px;
+    }
+
+    .primary:hover { background: #245eae; }
+
+    .secondary {
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 11px 16px;
+      background: white;
+      color: var(--navy);
+    }
+
+    .secondary:hover, .grade:hover {
+      border-color: var(--blue);
+    }
+
+    .subjects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 15px;
+      margin-top: 24px;
+    }
+
+    .subject {
+      text-align: left;
+      padding: 23px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: white;
+      color: var(--navy);
+    }
+
+    .subject:hover {
+      border-color: var(--blue);
+      transform: translateY(-2px);
+    }
+
+    .symbol {
+      font-size: 27px;
+      color: var(--blue);
+      margin-bottom: 15px;
+    }
+
+    .subject h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .subject p {
+      font-size: 13px;
+      margin-bottom: 0;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: clamp(20px, 4vw, 34px);
+      margin-top: 25px;
+    }
+
+    .back {
+      border: 0;
+      background: transparent;
+      color: var(--blue);
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: 25px;
+      font: inherit;
+    }
+
+    .grades {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .grade {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--navy);
+      border-radius: 9px;
+      padding: 15px 8px;
+    }
+
+    .grade:hover {
+      background: #edf4ff;
+      border-color: var(--blue);
+    }
+
+    .summary {
+      background: #f1f6fd;
+      border-radius: 11px;
+      padding: 20px;
+      margin: 20px 0;
+      line-height: 1.8;
+    }
+
+    .status {
+      display: inline-block;
+      background: #fff0d9;
+      color: #805317;
+      border-radius: 20px;
+      padding: 7px 11px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .notice {
+      margin-top: 28px;
+      padding: 17px;
+      background: #edf3fb;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #405873;
+    }
+
+    footer {
+      padding: 28px 20px;
+      background: white;
+      border-top: 1px solid var(--border);
+      color: #8491a3;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    [hidden] { display: none !important; }
+
+    button:focus-visible {
+      outline: 3px solid #80b3fa;
+      outline-offset: 3px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">ATLAS<span>.</span></div>
+    <div class="tag">ACADEMIC ASSESSMENTS</div>
+  </header>
+
+  <main>
+    <section id="home">
+      <div class="hero">
+        <div class="eyebrow">A new way to measure learning</div>
+        <h1>Discover what you know.<br>Understand what comes next.</h1>
+        <p>
+          Academic assessments designed to explore your strengths,
+          identify areas for growth, and build a clearer picture
+          of your knowledge across subjects and grade levels.
+        </p>
+        <button class="primary" onclick="showSubjects()">
+          Explore assessments →
+        </button>
+      </div>
+
+      <h2 style="margin-top:55px">Built around your learning</h2>
+      <p>
+        Choose an academic subject and grade to explore
+        the assessments Atlas is developing.
+      </p>
+    </section>
+
+    <section id="subjectPage" hidden>
+      <button class="back" onclick="showHome()">← Home</button>
+      <div class="eyebrow">Step 1 of 2</div>
+      <h1 style="font-size:42px">Choose your subject.</h1>
+      <p>Select the subject you want to be assessed in.</p>
+
+      <div class="subjects">
+        <button class="subject" onclick="chooseSubject('Mathematics')">
+          <div class="symbol">∑</div>
+          <h3>Mathematics</h3>
+          <p>Numbers, algebra, geometry, statistics, and more.</p>
+        </button>
+
+        <button class="subject" onclick="chooseSubject('Reading')">
+          <div class="symbol">Aa</div>
+          <h3>Reading</h3>
+          <p>Comprehension, vocabulary, and analysis.</p>
+        </button>
+
+        <button class="subject" onclick="chooseSubject('Science')">
+          <div class="symbol">⚗</div>
+          <h3>Science</h3>
+          <p>Scientific concepts, evidence, and data.</p>
+        </button>
+
+        <button class="subject" onclick="chooseSubject('Social Studies')">
+          <div class="symbol">◎</div>
+          <h3>Social Studies</h3>
+          <p>History, geography, civics, and economics.</p>
+        </button>
+
+        <button class="subject" onclick="chooseSubject('Writing')">
+          <div class="symbol">✎</div>
+          <h3>Writing</h3>
+          <p>Written expression, reasoning, and organization.</p>
+        </button>
+      </div>
+    </section>
+
+    <section id="gradePage" hidden>
+      <button class="back" onclick="showSubjects()">← Change subject</button>
+      <div class="eyebrow">Step 2 of 2</div>
+      <h1 style="font-size:42px">Choose your grade.</h1>
+      <p id="gradeDescription">
+        Select the grade level for your assessment.
+      </p>
+      <div class="grades" id="gradeButtons"></div>
+    </section>
+
+    <section id="overviewPage" hidden>
+      <button class="back" onclick="showGrades()">← Change grade</button>
+      <div class="eyebrow">Assessment selection</div>
+      <h1 style="font-size:42px">Your assessment.</h1>
+      <p>Review your selection below.</p>
+
+      <div class="panel">
+        <span class="status">IN DEVELOPMENT</span>
+        <h2 id="assessmentTitle">Mathematics · Grade 9</h2>
+        <div class="summary">
+          <strong>Subject:</strong> <span id="chosenSubject"></span><br>
+          <strong>Grade:</strong> <span id="chosenGrade"></span><br>
+          <strong>Assessment type:</strong> Adaptive academic assessment<br>
+          <strong>Question format:</strong> Depends on the subject
+        </div>
+        <p id="assessmentDescription">
+          Atlas assessments are currently being developed.
+        </p>
+        <button class="primary" onclick="showComingSoon()">
+          Continue
+        </button>
+      </div>
+    </section>
+
+    <section id="comingPage" hidden>
+      <button class="back" onclick="showOverview()">← Back to assessment</button>
+      <div class="panel">
+        <div class="eyebrow">Coming soon</div>
+        <h2>This assessment isn't ready yet.</h2>
+        <p>
+          Your selection works! The actual questions, adaptive engine,
+          and validated scoring system still need to be built.
+        </p>
+        <button class="primary" onclick="showSubjects()">
+          Explore another subject
+        </button>
+      </div>
+    </section>
+
+    <div class="notice">
+      <strong>About Atlas</strong><br>
+      Atlas is an independent assessment project in development.
+      The selection interface is a prototype, not an official
+      standardized test. No official scores or student accounts
+      are available yet.
+    </div>
+  </main>
+
+  <footer>
+    ATLAS ASSESSMENTS · ACADEMIC ASSESSMENT PROJECT
+  </footer>
+
+  <script>
+    let selectedSubject = "";
+    let selectedGrade = "";
+
+    const pages = [
+      "home",
+      "subjectPage",
+      "gradePage",
+      "overviewPage",
+      "comingPage"
+    ];
+
+    function showPage(pageId) {
+      pages.forEach(function(id) {
+        document.getElementById(id).hidden = id !== pageId;
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showHome() {
+      showPage("home");
+    }
+
+    function showSubjects() {
+      showPage("subjectPage");
+    }
+
+    function chooseSubject(subject) {
+      selectedSubject = subject;
+      document.getElementById("gradeDescription").textContent =
+        "You selected " + subject +
+        ". Now choose the grade level for your assessment.";
+
+      const container = document.getElementById("gradeButtons");
+      container.replaceChildren();
+
+      const grades = [
+        "Kindergarten",
+        "Grade 1", "Grade 2", "Grade 3", "Grade 4",
+        "Grade 5", "Grade 6", "Grade 7", "Grade 8",
+        "Grade 9", "Grade 10", "Grade 11", "Grade 12"
+      ];
+
+      grades.forEach(function(grade) {
+        const button = document.createElement("button");
+        button.className = "grade";
+        button.textContent = grade;
+        button.onclick = function() {
+          chooseGrade(grade);
+        };
+        container.appendChild(button);
+      });
+
+      showPage("gradePage");
+    }
+
+    function showGrades() {
+      showPage("gradePage");
+    }
+
+    function chooseGrade(grade) {
+      selectedGrade = grade;
+
+      document.getElementById("assessmentTitle").textContent =
+        selectedSubject + " · " + selectedGrade;
+
+      document.getElementById("chosenSubject").textContent =
+        selectedSubject;
+
+      document.getElementById("chosenGrade").textContent =
+        selectedGrade;
+
+      document.getElementById("assessmentDescription").textContent =
+        "The " + selectedSubject + " assessment for " +
+        selectedGrade + " is planned, but its questions and scoring " +
+        "system have not been implemented yet.";
+
+      showPage("overviewPage");
+    }
+
+    function showOverview() {
+      showPage("overviewPage");
+    }
+
+    function showComingSoon() {
+      showPage("comingPage");
+    }
+  </script>
+</body>
+</html>
