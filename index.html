@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atlas Assessments</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: #192b43;
+      background: #f6f8fb;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 8%;
+      background: white;
+      border-bottom: 1px solid #e5eaf1;
+    }
+
+    .logo {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -0.6px;
+    }
+
+    .logo span { color: #3478d4; }
+
+    .tag {
+      font-size: 12px;
+      color: #52657c;
+      background: #edf3fb;
+      padding: 8px 12px;
+      border-radius: 20px;
+    }
+
+    main {
+      max-width: 1050px;
+      margin: auto;
+      padding: 65px 24px;
+    }
+
+    .hero { max-width: 700px; }
+
+    .eyebrow {
+      color: #3478d4;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(38px, 7vw, 64px);
+      line-height: 1.08;
+      letter-spacing: -2px;
+      margin: 18px 0;
+    }
+
+    .hero p {
+      color: #63748a;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 570px;
+    }
+
+    .section-title {
+      margin-top: 55px;
+      font-size: 23px;
+    }
+
+    .subjects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    .subject {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 23px;
+      text-align: left;
+      color: #192b43;
+      cursor: pointer;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .subject:hover {
+      border-color: #3478d4;
+      transform: translateY(-2px);
+    }
+
+    .subject .symbol {
+      font-size: 25px;
+      margin-bottom: 15px;
+    }
+
+    .subject h3 { margin: 0 0 8px; font-size: 18px; }
+    .subject p { color: #718096; font-size: 13px; line-height: 1.6; }
+
+    .notice {
+      background: #edf3fb;
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 28px;
+      color: #405873;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    #message {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 12px;
+      background: white;
+      border: 1px solid #dce5f0;
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      color: #8491a3;
+      font-size: 12px;
+      padding: 30px 20px;
+      border-top: 1px solid #e5eaf1;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">ATLAS<span>.</span></div>
+    <div class="tag">ACADEMIC ASSESSMENTS</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow">A new way to measure learning</div>
+      <h1>Discover what you know.<br>Understand what comes next.</h1>
+      <p>
+        Academic assessments designed to explore your strengths,
+        identify areas for growth, and build a clearer picture of
+        your knowledge across subjects and grade levels.
+      </p>
+    </section>
+
+    <h2 class="section-title">Explore assessments</h2>
+    <p style="color:#718096;line-height:1.7">
+      Choose a subject to begin exploring our assessment categories.
+    </p>
+
+    <section class="subjects">
+      <button class="subject" onclick="choose('Mathematics')">
+        <div class="symbol">∑</div>
+        <h3>Mathematics</h3>
+        <p>Explore numerical reasoning, algebra, geometry, and more.</p>
+      </button>
+
+      <button class="subject" onclick="choose('Reading')">
+        <div class="symbol">Aa</div>
+        <h3>Reading</h3>
+        <p>Explore comprehension, vocabulary, and critical analysis.</p>
+      </button>
+
+      <button class="subject" onclick="choose('Science')">
+        <div class="symbol">⚗</div>
+        <h3>Science</h3>
+        <p>Explore scientific concepts, evidence, and data.</p>
+      </button>
+
+      <button class="subject" onclick="choose('Social Studies')">
+        <div class="symbol">◎</div>
+        <h3>Social Studies</h3>
+        <p>Explore history, geography, civics, and economics.</p>
+      </button>
+
+      <button class="subject" onclick="choose('Writing')">
+        <div class="symbol">Aa</div>
+        <h3>Writing</h3>
+        <p>Demonstrate your writing skills through extended responses.</p>
+      </button>
+    </section>
+
+    <div id="message" aria-live="polite"></div>
+
+    <div class="notice">
+      <strong>About Atlas</strong><br>
+      Atlas is an assessment project in development. The categories
+      displayed here are a preview; validated assessments, official
+      scores, and student accounts are not available yet.
+    </div>
+  </main>
+
+  <footer>ATLAS ASSESSMENTS · ACADEMIC ASSESSMENT PROJECT</footer>
+
+  <script>
+    function choose(subject) {
+      const message = document.getElementById("message");
+      message.style.display = "block";
+      message.innerHTML =
+        "<strong>" + subject + "</strong><br>" +
+        "You've selected " + subject +
+        ". Grade selection and assessments are coming soon!";
+      message.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  </script>
+</body>
+</html>
