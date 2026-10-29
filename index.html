@@ -995,5 +995,608 @@
       }
     }
   </script>
-</body>
-</html>
+
+<script>
+  let assessmentType = "";
+  let subject = "";
+  let grade = "";
+  let questionIndex = 0;
+  let selectedAnswers = [];
+  let sessionQuestions = [];
+  let testStage = "baseline";
+
+  const pages = [
+    "home", "types", "subjects", "grades",
+    "overview", "test", "results", "coming"
+  ];
+
+  // Initial diagnostic questions.
+  const baselineQuestions = [
+    {
+      topic: "Counting and numbers",
+      question: "How many stars are shown? ★ ★ ★",
+      choices: ["2", "3", "4", "5"],
+      correct: 1,
+      explanation: "There are three stars. Count each star once."
+    },
+    {
+      topic: "Counting and numbers",
+      question: "Which number is seven?",
+      choices: ["5", "6", "7", "9"],
+      correct: 2,
+      explanation: "The numeral 7 represents seven objects."
+    },
+    {
+      topic: "Comparing numbers",
+      question: "Which group has more objects?",
+      choices: [
+        "A group of 2 blocks",
+        "A group of 4 blocks",
+        "Both have the same number",
+        "There are no blocks"
+      ],
+      correct: 1,
+      explanation: "Four blocks are more than two blocks."
+    },
+    {
+      topic: "Addition",
+      question: "You have 2 apples and get 3 more. How many apples do you have now?",
+      choices: ["3", "4", "5", "6"],
+      correct: 2,
+      explanation: "2 + 3 = 5."
+    },
+    {
+      topic: "Addition",
+      question: "What is 4 + 1?",
+      choices: ["3", "4", "5", "6"],
+      correct: 2,
+      explanation: "Four plus one equals five."
+    },
+    {
+      topic: "Subtraction",
+      question: "You have 5 balloons. Two float away. How many remain?",
+      choices: ["2", "3", "4", "7"],
+      correct: 1,
+      explanation: "5 − 2 = 3."
+    },
+    {
+      topic: "Subtraction",
+      question: "What is 3 − 1?",
+      choices: ["1", "2", "3", "4"],
+      correct: 1,
+      explanation: "Taking one away from three leaves two."
+    },
+    {
+      topic: "Shapes",
+      question: "Which shape has three straight sides?",
+      choices: ["Circle", "Triangle", "Rectangle", "Oval"],
+      correct: 1,
+      explanation: "A triangle has three straight sides."
+    },
+    {
+      topic: "Shapes",
+      question: "Which shape is round and has no corners?",
+      choices: ["Triangle", "Square", "Circle", "Rectangle"],
+      correct: 2,
+      explanation: "A circle is round and has no corners."
+    },
+    {
+      topic: "Spatial reasoning",
+      question: "A ball is above a box. Where is the ball?",
+      choices: ["Below the box", "Above the box", "Inside the box", "Behind the box"],
+      correct: 1,
+      explanation: "Above means in a higher position."
+    },
+    {
+      topic: "Measurement",
+      question: "A pencil is 8 cubes long. A crayon is 5 cubes long. Which is longer?",
+      choices: ["The pencil", "The crayon", "They are the same length", "Neither"],
+      correct: 0,
+      explanation: "Eight cubes is longer than five cubes."
+    },
+    {
+      topic: "Patterns",
+      question: "What comes next? Red, blue, red, blue, red, ___",
+      choices: ["Red", "Blue", "Green", "Yellow"],
+      correct: 1,
+      explanation: "The colors alternate red and blue."
+    }
+  ];
+
+  // Additional questions used when a topic needs more assessment.
+  // These remain focused on Kindergarten-level expectations.
+  const followUpQuestions = {
+    "Counting and numbers": [
+      {
+        topic: "Counting and numbers",
+        question: "What number comes after 8?",
+        choices: ["6", "7", "9", "10"],
+        correct: 2,
+        explanation: "Nine comes immediately after eight."
+      },
+      {
+        topic: "Counting and numbers",
+        question: "Count these dots: ● ● ● ● ●. How many are there?",
+        choices: ["3", "4", "5", "6"],
+        correct: 2,
+        explanation: "There are five dots."
+      }
+    ],
+    "Comparing numbers": [
+      {
+        topic: "Comparing numbers",
+        question: "Which number is greater?",
+        choices: ["2", "5", "They are equal", "Neither"],
+        correct: 1,
+        explanation: "Five is greater than two."
+      },
+      {
+        topic: "Comparing numbers",
+        question: "There are 4 ducks and 1 goose. Which group has more animals?",
+        choices: ["Ducks", "Geese", "Both groups have the same number", "Neither"],
+        correct: 0,
+        explanation: "Four ducks is more than one goose."
+      }
+    ],
+    "Addition": [
+      {
+        topic: "Addition",
+        question: "What is 2 + 2?",
+        choices: ["3", "4", "5", "6"],
+        correct: 1,
+        explanation: "Two plus two equals four."
+      },
+      {
+        topic: "Addition",
+        question: "There are 3 birds on a fence. Two more arrive. How many birds are there?",
+        choices: ["4", "5", "6", "7"],
+        correct: 1,
+        explanation: "3 + 2 = 5."
+      }
+    ],
+    "Subtraction": [
+      {
+        topic: "Subtraction",
+        question: "What is 4 − 2?",
+        choices: ["1", "2", "3", "6"],
+        correct: 1,
+        explanation: "Four minus two equals two."
+      },
+      {
+        topic: "Subtraction",
+        question: "You have 3 cookies and eat 1. How many are left?",
+        choices: ["1", "2", "3", "4"],
+        correct: 1,
+        explanation: "3 − 1 = 2."
+      }
+    ],
+    "Shapes": [
+      {
+        topic: "Shapes",
+        question: "Which shape has four equal sides?",
+        choices: ["Circle", "Triangle", "Square", "Oval"],
+        correct: 2,
+        explanation: "A square has four equal sides."
+      },
+      {
+        topic: "Shapes",
+        question: "Which shape has no straight sides?",
+        choices: ["Triangle", "Rectangle", "Square", "Circle"],
+        correct: 3,
+        explanation: "A circle has a curved edge and no straight sides."
+      }
+    ],
+    "Spatial reasoning": [
+      {
+        topic: "Spatial reasoning",
+        question: "A toy is under a table. Where is the toy?",
+        choices: ["Above the table", "Under the table", "On top of the table", "Far above the table"],
+        correct: 1,
+        explanation: "Under means below something."
+      },
+      {
+        topic: "Spatial reasoning",
+        question: "A book is inside a bag. Where is the book?",
+        choices: ["Outside the bag", "Inside the bag", "Above the bag", "Below the bag"],
+        correct: 1,
+        explanation: "The book is inside the bag."
+      }
+    ],
+    "Measurement": [
+      {
+        topic: "Measurement",
+        question: "A ribbon is 6 blocks long. Another ribbon is 3 blocks long. Which is shorter?",
+        choices: ["The 6-block ribbon", "The 3-block ribbon", "Both are equal", "Neither"],
+        correct: 1,
+        explanation: "Three blocks is shorter than six blocks."
+      },
+      {
+        topic: "Measurement",
+        question: "Which object would you usually measure with cubes?",
+        choices: ["The length of a pencil", "The color of a pencil", "The sound of a pencil", "The smell of a pencil"],
+        correct: 0,
+        explanation: "Cubes can be placed end to end to measure length."
+      }
+    ],
+    "Patterns": [
+      {
+        topic: "Patterns",
+        question: "What comes next? Circle, square, circle, square, ___",
+        choices: ["Triangle", "Circle", "Square", "Star"],
+        correct: 1,
+        explanation: "The pattern alternates circle and square."
+      },
+      {
+        topic: "Patterns",
+        question: "What comes next? Clap, tap, clap, tap, ___",
+        choices: ["Tap", "Clap", "Jump", "Stop"],
+        correct: 1,
+        explanation: "The pattern alternates clap and tap."
+      }
+    ]
+  };
+
+  // If the baseline shows no flagged topics, use a short
+  // confirmation round before reporting results.
+  const confirmationQuestions = [
+    {
+      topic: "Counting and numbers",
+      question: "Which number comes before 6?",
+      choices: ["4", "5", "7", "8"],
+      correct: 1,
+      explanation: "Five comes immediately before six."
+    },
+    {
+      topic: "Addition",
+      question: "What is 1 + 3?",
+      choices: ["3", "4", "5", "6"],
+      correct: 1,
+      explanation: "One plus three equals four."
+    },
+    {
+      topic: "Shapes",
+      question: "Which shape has four sides?",
+      choices: ["Circle", "Triangle", "Rectangle", "Oval"],
+      correct: 2,
+      explanation: "A rectangle has four sides."
+    }
+  ];
+
+  function showPage(pageId) {
+    pages.forEach(function(id) {
+      document.getElementById(id).hidden = id !== pageId;
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function chooseType(type) {
+    assessmentType = type;
+    document.getElementById("subjectIntro").textContent =
+      type === "Standard"
+        ? "Choose a subject to assess your grade-level learning."
+        : "Choose a subject to discover your current level through adaptive questions.";
+    showPage("subjects");
+  }
+
+  function chooseSubject(selectedSubject) {
+    subject = selectedSubject;
+    document.getElementById("gradeIntro").textContent =
+      "Choose your current grade for " + subject + ".";
+
+    const grid = document.getElementById("gradeGrid");
+    grid.replaceChildren();
+
+    const grades = ["Kindergarten"];
+    for (let i = 1; i <= 12; i++) {
+      grades.push("Grade " + i);
+    }
+
+    grades.forEach(function(g) {
+      const button = document.createElement("button");
+      button.className = "grade";
+      button.textContent = g;
+      button.onclick = function() {
+        chooseGrade(g);
+      };
+      grid.appendChild(button);
+    });
+
+    showPage("grades");
+  }
+
+  function isAvailableTest() {
+    return grade === "Kindergarten" &&
+      subject === "Mathematics" &&
+      assessmentType === "Standard";
+  }
+
+  function chooseGrade(selectedGrade) {
+    grade = selectedGrade;
+
+    document.getElementById("overviewTitle").textContent =
+      grade + " " + subject;
+    document.getElementById("selectedType").textContent =
+      assessmentType + " Assessment";
+    document.getElementById("selectedSubject").textContent = subject;
+    document.getElementById("selectedGrade").textContent = grade;
+
+    document.getElementById("assessmentDescription").textContent =
+      assessmentType === "Standard"
+        ? "The test begins with a baseline, then asks additional questions about standards that need more evidence."
+        : "This assessment will eventually adjust question difficulty across grade levels.";
+
+    document.getElementById("availabilityNotice").textContent =
+      isAvailableTest()
+        ? "Available: a 12-question baseline followed by targeted or confirmation questions."
+        : "This assessment has not been built yet.";
+
+    document.getElementById("startButton").textContent =
+      isAvailableTest() ? "Start assessment →" : "View status →";
+
+    document.getElementById("comingDescription").textContent =
+      "The " + grade + " " + subject + " " + assessmentType +
+      " Assessment has not been built yet.";
+
+    showPage("overview");
+  }
+
+  function startAssessment() {
+    if (!isAvailableTest()) {
+      showPage("coming");
+      return;
+    }
+
+    sessionQuestions = baselineQuestions.slice();
+    selectedAnswers = Array(sessionQuestions.length).fill(null);
+    questionIndex = 0;
+    testStage = "baseline";
+
+    document.querySelector("#test .eyebrow").textContent =
+      "Standard Mathematics · Kindergarten · Baseline";
+
+    document.querySelector("#test .intro").textContent =
+      "Answer the initial questions. Your results will be used to choose the next questions.";
+
+    renderQuestion();
+    showPage("test");
+  }
+
+  function renderQuestion() {
+    const q = sessionQuestions[questionIndex];
+    const total = sessionQuestions.length;
+
+    document.getElementById("questionNumber").textContent =
+      (testStage === "baseline" ? "Baseline" :
+       testStage === "followup" ? "Targeted questions" : "Confirmation round") +
+      " · Question " + (questionIndex + 1) + " of " + total;
+
+    document.getElementById("questionText").textContent = q.question;
+
+    document.getElementById("progressFill").style.width =
+      ((questionIndex + 1) / total * 100) + "%";
+
+    const answerList = document.getElementById("answerList");
+    answerList.replaceChildren();
+
+    q.choices.forEach(function(choice, index) {
+      const button = document.createElement("button");
+      button.className = "answer";
+      button.setAttribute("aria-pressed",
+        selectedAnswers[questionIndex] === index ? "true" : "false");
+
+      if (selectedAnswers[questionIndex] === index) {
+        button.classList.add("selected");
+      }
+
+      const letter = document.createElement("span");
+      letter.className = "answer-letter";
+      letter.textContent = String.fromCharCode(65 + index);
+
+      const text = document.createElement("span");
+      text.textContent = choice;
+
+      button.append(letter, text);
+      button.onclick = function() {
+        selectAnswer(index);
+      };
+
+      answerList.appendChild(button);
+    });
+
+    document.getElementById("nextButton").disabled =
+      selectedAnswers[questionIndex] === null;
+
+    document.getElementById("nextButton").textContent =
+      questionIndex === total - 1
+        ? testStage === "baseline"
+          ? "Finish baseline →"
+          : "Finish assessment"
+        : "Next question →";
+
+    document.getElementById("answeredStatus").textContent =
+      selectedAnswers[questionIndex] === null
+        ? "Choose one answer to continue."
+        : "Answer selected.";
+  }
+
+  function selectAnswer(index) {
+    selectedAnswers[questionIndex] = index;
+    renderQuestion();
+  }
+
+  function nextQuestion() {
+    if (selectedAnswers[questionIndex] === null) return;
+
+    if (questionIndex < sessionQuestions.length - 1) {
+      questionIndex++;
+      renderQuestion();
+      return;
+    }
+
+    if (testStage === "baseline") {
+      beginFollowUp();
+      return;
+    }
+
+    showResults();
+  }
+
+  function beginFollowUp() {
+    // Identify topics where at least one baseline answer was incorrect.
+    const missedTopics = new Set();
+
+    baselineQuestions.forEach(function(q, index) {
+      if (selectedAnswers[index] !== q.correct) {
+        missedTopics.add(q.topic);
+      }
+    });
+
+    let extraQuestions = [];
+
+    missedTopics.forEach(function(topic) {
+      const bank = followUpQuestions[topic] || [];
+      extraQuestions = extraQuestions.concat(bank);
+    });
+
+    if (extraQuestions.length === 0) {
+      extraQuestions = confirmationQuestions.slice();
+      testStage = "confirmation";
+
+      document.querySelector("#test .eyebrow").textContent =
+        "Standard Mathematics · Kindergarten · Confirmation";
+
+      document.querySelector("#test .intro").textContent =
+        "Your baseline did not flag a topic for extra questions. Answer these confirmation questions before results.";
+    } else {
+      testStage = "followup";
+
+      document.querySelector("#test .eyebrow").textContent =
+        "Standard Mathematics · Kindergarten · Targeted follow-up";
+
+      document.querySelector("#test .intro").textContent =
+        "These additional questions focus on topics where your baseline answers showed that more evidence is needed.";
+    }
+
+    // Append additional questions without erasing baseline answers.
+    const previousLength = sessionQuestions.length;
+    sessionQuestions = sessionQuestions.concat(extraQuestions);
+
+    for (let i = previousLength; i < sessionQuestions.length; i++) {
+      selectedAnswers.push(null);
+    }
+
+    questionIndex = previousLength;
+    renderQuestion();
+  }
+
+  function showResults() {
+    let correctCount = 0;
+    const topics = {};
+
+    sessionQuestions.forEach(function(q, index) {
+      if (!topics[q.topic]) {
+        topics[q.topic] = { correct: 0, total: 0 };
+      }
+
+      topics[q.topic].total++;
+
+      if (selectedAnswers[index] === q.correct) {
+        correctCount++;
+        topics[q.topic].correct++;
+      }
+    });
+
+    const percentage =
+      Math.round(correctCount / sessionQuestions.length * 100);
+
+    document.getElementById("scorePercent").textContent =
+      percentage + "%";
+
+    document.getElementById("scoreSummary").textContent =
+      "You answered " + correctCount + " out of " +
+      sessionQuestions.length + " questions correctly, including the baseline and additional questions.";
+
+    const topicResults = document.getElementById("topicResults");
+    topicResults.replaceChildren();
+
+    const heading = document.createElement("h2");
+    heading.textContent = "Performance by topic";
+    heading.style.marginTop = "28px";
+    topicResults.appendChild(heading);
+
+    Object.keys(topics).forEach(function(topic) {
+      const result = topics[topic];
+      const pct = Math.round(result.correct / result.total * 100);
+
+      const row = document.createElement("div");
+      row.className = "topic-row";
+
+      const topicHeading = document.createElement("div");
+      topicHeading.className = "topic-heading";
+
+      const name = document.createElement("span");
+      name.textContent = topic;
+
+      const value = document.createElement("span");
+      value.textContent = result.correct + "/" + result.total;
+
+      topicHeading.append(name, value);
+
+      const track = document.createElement("div");
+      track.className = "topic-track";
+
+      const fill = document.createElement("div");
+      fill.className = "topic-fill";
+      fill.style.width = pct + "%";
+
+      track.appendChild(fill);
+      row.append(topicHeading, track);
+      topicResults.appendChild(row);
+    });
+
+    const review = document.getElementById("answerReview");
+    review.replaceChildren();
+
+    sessionQuestions.forEach(function(q, index) {
+      const isCorrect = selectedAnswers[index] === q.correct;
+      const item = document.createElement("div");
+      item.className = "review-item";
+
+      const title = document.createElement("strong");
+      title.textContent = (index + 1) + ". " + q.question;
+
+      const outcome = document.createElement("p");
+      outcome.className = isCorrect ? "correct-text" : "incorrect-text";
+      outcome.textContent = isCorrect ? "Correct" : "Not quite";
+
+      const yourAnswer = document.createElement("p");
+      yourAnswer.textContent = "Your answer: " +
+        (selectedAnswers[index] === null
+          ? "No answer"
+          : q.choices[selectedAnswers[index]]);
+
+      const correctAnswer = document.createElement("p");
+      correctAnswer.textContent = "Correct answer: " + q.choices[q.correct];
+
+      const explanation = document.createElement("p");
+      explanation.textContent = q.explanation;
+
+      item.append(title, outcome, yourAnswer, correctAnswer, explanation);
+      review.appendChild(item);
+    });
+
+    showPage("results");
+  }
+
+  function restartAssessment() {
+    startAssessment();
+  }
+
+  function exitTest() {
+    const shouldExit = window.confirm(
+      "Leave this assessment? Your current answers will not be saved."
+    );
+
+    if (shouldExit) showPage("overview");
+  }
+</script>
