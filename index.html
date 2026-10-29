@@ -4,369 +4,411 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#142b4a">
   <title>Atlas Assessments</title>
   <style>
-    * { box-sizing: border-box; }
-
     :root {
-      --navy: #192b43;
-      --blue: #3478d4;
-      --muted: #718096;
-      --border: #e2e8f0;
-      --bg: #f6f8fb;
+      --navy: #142b4a;
+      --blue: #3569b8;
+      --pale: #edf3fc;
+      --border: #dce3ed;
+      --muted: #637187;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      background: #f7f9fc;
       color: var(--navy);
-      background: var(--bg);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
     }
 
     header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 8%;
-      background: white;
+      background: var(--white);
       border-bottom: 1px solid var(--border);
+      padding: 18px 7%;
     }
 
-    .logo {
-      font-size: 22px;
+    .brand {
+      font-size: 21px;
       font-weight: 800;
-      letter-spacing: -1px;
+      letter-spacing: -0.6px;
     }
 
-    .logo span { color: var(--blue); }
-
-    .tag {
-      font-size: 11px;
-      letter-spacing: 1px;
-      color: var(--muted);
+    .brand span {
+      color: var(--blue);
     }
 
     main {
-      max-width: 1000px;
-      margin: auto;
-      padding: 55px 24px 75px;
-      min-height: 75vh;
+      width: min(920px, 90%);
+      margin: 52px auto;
     }
 
     .eyebrow {
       color: var(--blue);
       font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 2px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
     }
 
     h1 {
-      font-size: clamp(36px, 6vw, 58px);
-      line-height: 1.12;
-      letter-spacing: -2px;
-      margin: 16px 0;
+      font-size: clamp(32px, 6vw, 48px);
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      margin: 12px 0;
     }
 
-    h2 { font-size: 26px; }
+    h2 {
+      font-size: 26px;
+      line-height: 1.25;
+      margin: 12px 0;
+    }
 
     p {
       color: var(--muted);
-      line-height: 1.8;
     }
 
-    .hero { max-width: 680px; }
-
-    .primary, .secondary, .subject, .grade {
-      font: inherit;
-      cursor: pointer;
-      transition: 0.15s ease;
+    .intro {
+      max-width: 650px;
+      margin-bottom: 32px;
     }
 
-    .primary {
-      border: 0;
-      border-radius: 9px;
-      background: var(--blue);
-      color: white;
-      padding: 14px 22px;
-      font-weight: bold;
-      margin-top: 14px;
-    }
-
-    .primary:hover { background: #245eae; }
-
-    .secondary {
+    .panel {
+      background: var(--white);
       border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 11px 16px;
-      background: white;
-      color: var(--navy);
+      border-radius: 18px;
+      padding: clamp(22px, 5vw, 36px);
+      box-shadow: 0 8px 28px rgba(20, 43, 74, 0.04);
     }
 
-    .secondary:hover, .grade:hover {
-      border-color: var(--blue);
-    }
-
-    .subjects {
+    .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 15px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
       margin-top: 24px;
     }
 
-    .subject {
+    .choice {
       text-align: left;
-      padding: 23px;
+      background: var(--white);
       border: 1px solid var(--border);
       border-radius: 13px;
-      background: white;
+      padding: 22px;
       color: var(--navy);
+      font: inherit;
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s;
     }
 
-    .subject:hover {
+    .choice:hover {
       border-color: var(--blue);
       transform: translateY(-2px);
     }
 
-    .symbol {
-      font-size: 27px;
-      color: var(--blue);
-      margin-bottom: 15px;
+    .choice:focus-visible,
+    .button:focus-visible,
+    .back:focus-visible {
+      outline: 3px solid #91b8f4;
+      outline-offset: 3px;
     }
 
-    .subject h3 {
-      margin: 0 0 8px;
+    .choice strong {
+      display: block;
       font-size: 18px;
+      margin: 9px 0 5px;
     }
 
-    .subject p {
-      font-size: 13px;
-      margin-bottom: 0;
+    .choice p {
+      font-size: 14px;
+      margin: 0;
     }
 
-    .panel {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: clamp(20px, 4vw, 34px);
-      margin-top: 25px;
-    }
-
-    .back {
-      border: 0;
-      background: transparent;
-      color: var(--blue);
-      cursor: pointer;
-      padding: 0;
-      margin-bottom: 25px;
-      font: inherit;
-    }
-
-    .grades {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-      gap: 10px;
-      margin-top: 22px;
-    }
-
-    .grade {
-      border: 1px solid var(--border);
-      background: white;
-      color: var(--navy);
-      border-radius: 9px;
-      padding: 15px 8px;
-    }
-
-    .grade:hover {
-      background: #edf4ff;
-      border-color: var(--blue);
-    }
-
-    .summary {
-      background: #f1f6fd;
+    .symbol {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 43px;
+      height: 43px;
+      background: var(--pale);
       border-radius: 11px;
-      padding: 20px;
-      margin: 20px 0;
-      line-height: 1.8;
-    }
-
-    .status {
-      display: inline-block;
-      background: #fff0d9;
-      color: #805317;
-      border-radius: 20px;
-      padding: 7px 11px;
-      font-size: 12px;
+      color: var(--blue);
+      font-size: 22px;
       font-weight: bold;
     }
 
+    .tag {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 4px 9px;
+      background: var(--pale);
+      border-radius: 20px;
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .back {
+      display: inline-block;
+      padding: 8px 0;
+      margin-bottom: 16px;
+      border: none;
+      background: transparent;
+      color: var(--blue);
+      font: inherit;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .grade {
+      text-align: center;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 5px;
+      color: var(--navy);
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .grade:hover {
+      border-color: var(--blue);
+      background: var(--pale);
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 22px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 9px;
+      background: var(--blue);
+      color: var(--white);
+      font: inherit;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background: #28569b;
+    }
+
     .notice {
-      margin-top: 28px;
-      padding: 17px;
-      background: #edf3fb;
+      margin-top: 22px;
+      padding: 14px 16px;
+      background: #f0f4fa;
       border-radius: 10px;
       font-size: 13px;
-      line-height: 1.8;
-      color: #405873;
+      color: var(--muted);
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .summary span {
+      color: var(--muted);
+    }
+
+    .summary strong {
+      overflow-wrap: anywhere;
     }
 
     footer {
-      padding: 28px 20px;
-      background: white;
+      width: min(920px, 90%);
+      margin: 50px auto 25px;
+      padding-top: 20px;
       border-top: 1px solid var(--border);
-      color: #8491a3;
-      text-align: center;
+      color: var(--muted);
       font-size: 12px;
     }
 
-    [hidden] { display: none !important; }
+    [hidden] {
+      display: none !important;
+    }
 
-    button:focus-visible {
-      outline: 3px solid #80b3fa;
-      outline-offset: 3px;
+    @media (max-width: 600px) {
+      main {
+        margin-top: 32px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .summary {
+        grid-template-columns: 1fr;
+        gap: 2px;
+      }
     }
   </style>
 </head>
-
 <body>
   <header>
-    <div class="logo">ATLAS<span>.</span></div>
-    <div class="tag">ACADEMIC ASSESSMENTS</div>
+    <div class="brand">ATLAS <span>ASSESSMENTS</span></div>
   </header>
 
   <main>
     <section id="home">
-      <div class="hero">
-        <div class="eyebrow">A new way to measure learning</div>
-        <h1>Discover what you know.<br>Understand what comes next.</h1>
-        <p>
-          Academic assessments designed to explore your strengths,
-          identify areas for growth, and build a clearer picture
-          of your knowledge across subjects and grade levels.
-        </p>
-        <button class="primary" onclick="showSubjects()">
+      <div class="eyebrow">Academic assessment platform</div>
+      <h1>Discover what you know.</h1>
+      <p class="intro">
+        Assess your grade-level learning or discover your current academic
+        level through adaptive testing. Choose the assessment that fits
+        your goals.
+      </p>
+      <div class="panel">
+        <h2>Welcome to Atlas</h2>
+        <p>Two assessment types. Different ways to understand learning.</p>
+        <button class="button" onclick="showPage('types')">
           Explore assessments →
         </button>
       </div>
-
-      <h2 style="margin-top:55px">Built around your learning</h2>
-      <p>
-        Choose an academic subject and grade to explore
-        the assessments Atlas is developing.
-      </p>
     </section>
 
-    <section id="subjectPage" hidden>
-      <button class="back" onclick="showHome()">← Home</button>
-      <div class="eyebrow">Step 1 of 2</div>
-      <h1 style="font-size:42px">Choose your subject.</h1>
-      <p>Select the subject you want to be assessed in.</p>
-
-      <div class="subjects">
-        <button class="subject" onclick="chooseSubject('Mathematics')">
-          <div class="symbol">∑</div>
-          <h3>Mathematics</h3>
-          <p>Numbers, algebra, geometry, statistics, and more.</p>
+    <section id="types" hidden>
+      <button class="back" onclick="showPage('home')">← Home</button>
+      <div class="eyebrow">Step 1 of 3</div>
+      <h1>Choose your assessment.</h1>
+      <p class="intro">
+        Each assessment type measures learning differently. Choose the
+        one that matches what you want to find out.
+      </p>
+      <div class="cards">
+        <button class="choice" onclick="chooseType('Standard')">
+          <span class="symbol">▤</span>
+          <strong>Standard Assessment</strong>
+          <p>Measure your knowledge of the standards expected at your
+          current grade level.</p>
+          <span class="tag">GRADE-LEVEL ACHIEVEMENT</span>
         </button>
+        <button class="choice" onclick="chooseType('Growth')">
+          <span class="symbol">↗</span>
+          <strong>Growth Assessment</strong>
+          <p>Answer adaptive questions that adjust in difficulty to
+          estimate your current level of knowledge.</p>
+          <span class="tag">ADAPTIVE ASSESSMENT</span>
+        </button>
+      </div>
+    </section>
 
-        <button class="subject" onclick="chooseSubject('Reading')">
-          <div class="symbol">Aa</div>
-          <h3>Reading</h3>
+    <section id="subjects" hidden>
+      <button class="back" onclick="showPage('types')">← Assessment types</button>
+      <div class="eyebrow">Step 2 of 3</div>
+      <h1>Choose a subject.</h1>
+      <p class="intro" id="subjectIntro">Select the subject you want to assess.</p>
+      <div class="cards">
+        <button class="choice" onclick="chooseSubject('Mathematics')">
+          <span class="symbol">∑</span>
+          <strong>Mathematics</strong>
+          <p>Numbers, algebra, geometry, and more.</p>
+        </button>
+        <button class="choice" onclick="chooseSubject('Reading')">
+          <span class="symbol">Aa</span>
+          <strong>Reading</strong>
           <p>Comprehension, vocabulary, and analysis.</p>
         </button>
-
-        <button class="subject" onclick="chooseSubject('Science')">
-          <div class="symbol">⚗</div>
-          <h3>Science</h3>
-          <p>Scientific concepts, evidence, and data.</p>
+        <button class="choice" onclick="chooseSubject('Science')">
+          <span class="symbol">⚛</span>
+          <strong>Science</strong>
+          <p>Scientific concepts, evidence, and reasoning.</p>
         </button>
-
-        <button class="subject" onclick="chooseSubject('Social Studies')">
-          <div class="symbol">◎</div>
-          <h3>Social Studies</h3>
+        <button class="choice" onclick="chooseSubject('Social Studies')">
+          <span class="symbol">◎</span>
+          <strong>Social Studies</strong>
           <p>History, geography, civics, and economics.</p>
         </button>
-
-        <button class="subject" onclick="chooseSubject('Writing')">
-          <div class="symbol">✎</div>
-          <h3>Writing</h3>
-          <p>Written expression, reasoning, and organization.</p>
+        <button class="choice" onclick="chooseSubject('Writing')">
+          <span class="symbol">¶</span>
+          <strong>Writing</strong>
+          <p>Written expression and communication.</p>
         </button>
       </div>
     </section>
 
-    <section id="gradePage" hidden>
-      <button class="back" onclick="showSubjects()">← Change subject</button>
-      <div class="eyebrow">Step 2 of 2</div>
-      <h1 style="font-size:42px">Choose your grade.</h1>
-      <p id="gradeDescription">
-        Select the grade level for your assessment.
-      </p>
-      <div class="grades" id="gradeButtons"></div>
+    <section id="grades" hidden>
+      <button class="back" onclick="showPage('subjects')">← Subjects</button>
+      <div class="eyebrow">Step 3 of 3</div>
+      <h1>Choose a grade.</h1>
+      <p class="intro" id="gradeIntro">Select your current grade.</p>
+      <div class="grid" id="gradeGrid"></div>
     </section>
 
-    <section id="overviewPage" hidden>
-      <button class="back" onclick="showGrades()">← Change grade</button>
-      <div class="eyebrow">Assessment selection</div>
-      <h1 style="font-size:42px">Your assessment.</h1>
-      <p>Review your selection below.</p>
-
+    <section id="overview" hidden>
+      <button class="back" onclick="showPage('grades')">← Grades</button>
+      <div class="eyebrow">Assessment overview</div>
+      <h1 id="overviewTitle">Your assessment</h1>
+      <p class="intro">Review your selections before continuing.</p>
       <div class="panel">
-        <span class="status">IN DEVELOPMENT</span>
-        <h2 id="assessmentTitle">Mathematics · Grade 9</h2>
         <div class="summary">
-          <strong>Subject:</strong> <span id="chosenSubject"></span><br>
-          <strong>Grade:</strong> <span id="chosenGrade"></span><br>
-          <strong>Assessment type:</strong> Adaptive academic assessment<br>
-          <strong>Question format:</strong> Depends on the subject
+          <span>Assessment type</span>
+          <strong id="selectedType"></strong>
         </div>
-        <p id="assessmentDescription">
-          Atlas assessments are currently being developed.
-        </p>
-        <button class="primary" onclick="showComingSoon()">
-          Continue
+        <div class="summary">
+          <span>Subject</span>
+          <strong id="selectedSubject"></strong>
+        </div>
+        <div class="summary">
+          <span>Grade</span>
+          <strong id="selectedGrade"></strong>
+        </div>
+        <div id="assessmentDescription"></div>
+        <button class="button" onclick="showPage('coming')">
+          Continue →
         </button>
       </div>
     </section>
 
-    <section id="comingPage" hidden>
-      <button class="back" onclick="showOverview()">← Back to assessment</button>
+    <section id="coming" hidden>
+      <button class="back" onclick="showPage('overview')">← Overview</button>
       <div class="panel">
-        <div class="eyebrow">Coming soon</div>
-        <h2>This assessment isn't ready yet.</h2>
+        <div class="eyebrow">In development</div>
+        <h1>Your assessment is coming soon.</h1>
+        <p id="comingDescription"></p>
         <p>
-          Your selection works! The actual questions, adaptive engine,
-          and validated scoring system still need to be built.
+          Atlas is still being developed. No official score will be
+          generated at this stage.
         </p>
-        <button class="primary" onclick="showSubjects()">
-          Explore another subject
+        <button class="button" onclick="showPage('types')">
+          Explore other assessments
         </button>
       </div>
     </section>
-
-    <div class="notice">
-      <strong>About Atlas</strong><br>
-      Atlas is an independent assessment project in development.
-      The selection interface is a prototype, not an official
-      standardized test. No official scores or student accounts
-      are available yet.
-    </div>
   </main>
 
   <footer>
-    ATLAS ASSESSMENTS · ACADEMIC ASSESSMENT PROJECT
+    Atlas Assessments is an independent educational project in development.
+    It is not an official state assessment or an affiliated MAP test.
+    Assessment content and scoring are not yet available.
   </footer>
 
   <script>
-    let selectedSubject = "";
-    let selectedGrade = "";
+    let assessmentType = "";
+    let subject = "";
+    let grade = "";
 
     const pages = [
-      "home",
-      "subjectPage",
-      "gradePage",
-      "overviewPage",
-      "comingPage"
+      "home", "types", "subjects", "grades", "overview", "coming"
     ];
 
     function showPage(pageId) {
@@ -376,73 +418,59 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    function showHome() {
-      showPage("home");
+    function chooseType(type) {
+      assessmentType = type;
+      document.getElementById("subjectIntro").textContent =
+        type === "Standard"
+          ? "Choose a subject to assess your grade-level learning."
+          : "Choose a subject to discover your current level through adaptive questions.";
+      showPage("subjects");
     }
 
-    function showSubjects() {
-      showPage("subjectPage");
-    }
+    function chooseSubject(selectedSubject) {
+      subject = selectedSubject;
+      document.getElementById("gradeIntro").textContent =
+        "Choose the grade you are currently in for " + subject + ".";
+      const grid = document.getElementById("gradeGrid");
+      grid.innerHTML = "";
 
-    function chooseSubject(subject) {
-      selectedSubject = subject;
-      document.getElementById("gradeDescription").textContent =
-        "You selected " + subject +
-        ". Now choose the grade level for your assessment.";
+      const grades = ["Kindergarten"];
+      for (let i = 1; i <= 12; i++) {
+        grades.push("Grade " + i);
+      }
 
-      const container = document.getElementById("gradeButtons");
-      container.replaceChildren();
-
-      const grades = [
-        "Kindergarten",
-        "Grade 1", "Grade 2", "Grade 3", "Grade 4",
-        "Grade 5", "Grade 6", "Grade 7", "Grade 8",
-        "Grade 9", "Grade 10", "Grade 11", "Grade 12"
-      ];
-
-      grades.forEach(function(grade) {
+      grades.forEach(function(g) {
         const button = document.createElement("button");
         button.className = "grade";
-        button.textContent = grade;
+        button.textContent = g;
         button.onclick = function() {
-          chooseGrade(grade);
+          chooseGrade(g);
         };
-        container.appendChild(button);
+        grid.appendChild(button);
       });
 
-      showPage("gradePage");
+      showPage("grades");
     }
 
-    function showGrades() {
-      showPage("gradePage");
-    }
-
-    function chooseGrade(grade) {
-      selectedGrade = grade;
-
-      document.getElementById("assessmentTitle").textContent =
-        selectedSubject + " · " + selectedGrade;
-
-      document.getElementById("chosenSubject").textContent =
-        selectedSubject;
-
-      document.getElementById("chosenGrade").textContent =
-        selectedGrade;
+    function chooseGrade(selectedGrade) {
+      grade = selectedGrade;
+      document.getElementById("overviewTitle").textContent =
+        grade + " " + subject;
+      document.getElementById("selectedType").textContent =
+        assessmentType + " Assessment";
+      document.getElementById("selectedSubject").textContent = subject;
+      document.getElementById("selectedGrade").textContent = grade;
 
       document.getElementById("assessmentDescription").textContent =
-        "The " + selectedSubject + " assessment for " +
-        selectedGrade + " is planned, but its questions and scoring " +
-        "system have not been implemented yet.";
+        assessmentType === "Standard"
+          ? "This assessment will focus on the academic standards expected for your selected grade."
+          : "This assessment will begin with questions around your selected grade level, then adjust difficulty based on your answers.";
 
-      showPage("overviewPage");
-    }
+      document.getElementById("comingDescription").textContent =
+        "The " + grade + " " + subject + " " + assessmentType +
+        " Assessment has not been built yet.";
 
-    function showOverview() {
-      showPage("overviewPage");
-    }
-
-    function showComingSoon() {
-      showPage("comingPage");
+      showPage("overview");
     }
   </script>
 </body>
