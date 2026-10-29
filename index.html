@@ -2,1444 +2,579 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#153b70">
-  <title>Atlas Assessments</title>
-
-  <style>
-    :root {
-      --navy: #153b70;
-      --blue: #2866b2;
-      --light-blue: #eaf2fc;
-      --pale-blue: #f5f8fd;
-      --white: #ffffff;
-      --text: #1d2939;
-      --muted: #667085;
-      --border: #dce4ef;
-      --green: #247a52;
-      --red: #b54747;
-      --shadow: 0 8px 30px rgba(21, 59, 112, 0.07);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: var(--pale-blue);
-      color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
-      line-height: 1.6;
-    }
-
-    button {
-      font: inherit;
-      cursor: pointer;
-    }
-
-    button:focus-visible {
-      outline: 3px solid #8bb9f0;
-      outline-offset: 3px;
-    }
-
-    .site-header {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .header-inner {
-      width: min(1100px, 92%);
-      margin: auto;
-      min-height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--navy);
-      font-size: 1.25rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-
-    .brand-mark {
-      display: grid;
-      place-items: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: var(--navy);
-      color: white;
-      font-size: 1.2rem;
-    }
-
-    .header-label {
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
-
-    main {
-      width: min(1000px, 92%);
-      margin: 38px auto 70px;
-    }
-
-    .hero {
-      padding: 44px 38px;
-      border-radius: 20px;
-      background: linear-gradient(120deg, #153b70, #2866b2);
-      color: white;
-      box-shadow: var(--shadow);
-    }
-
-    .eyebrow {
-      margin: 0 0 10px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-
-    .hero h1 {
-      max-width: 650px;
-      margin: 0 0 16px;
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      line-height: 1.12;
-      letter-spacing: -1.3px;
-    }
-
-    .hero p {
-      max-width: 640px;
-      margin: 0;
-      color: #e4edfb;
-      font-size: 1.05rem;
-    }
-
-    .section-heading {
-      margin: 36px 0 18px;
-    }
-
-    .section-heading h2 {
-      margin: 0 0 5px;
-      color: var(--navy);
-      font-size: 1.5rem;
-    }
-
-    .section-heading p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .assessment-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .assessment-card {
-      padding: 24px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-    }
-
-    .assessment-card h3 {
-      margin: 0 0 8px;
-      color: var(--navy);
-      font-size: 1.2rem;
-    }
-
-    .assessment-card p {
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: 0.94rem;
-    }
-
-    .card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .card-icon {
-      display: grid;
-      place-items: center;
-      width: 43px;
-      height: 43px;
-      border-radius: 12px;
-      background: var(--light-blue);
-      color: var(--navy);
-      font-size: 1.2rem;
-      font-weight: 800;
-    }
-
-    .status {
-      padding: 4px 9px;
-      border-radius: 20px;
-      background: #e8f5ed;
-      color: #226b45;
-      font-size: 0.75rem;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .status.soon {
-      background: #f0f2f5;
-      color: #596579;
-    }
-
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 44px;
-      padding: 10px 17px;
-      border: 1px solid transparent;
-      border-radius: 10px;
-      background: var(--blue);
-      color: white;
-      font-weight: 700;
-      transition: background 0.15s, transform 0.15s;
-    }
-
-    .button:hover {
-      background: var(--navy);
-    }
-
-    .button:active {
-      transform: translateY(1px);
-    }
-
-    .button.secondary {
-      background: white;
-      border-color: var(--border);
-      color: var(--navy);
-    }
-
-    .button.secondary:hover {
-      background: var(--light-blue);
-    }
-
-    .button:disabled {
-      cursor: not-allowed;
-      opacity: 0.5;
-    }
-
-    .notice {
-      margin-top: 24px;
-      padding: 16px 18px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: white;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .notice strong {
-      color: var(--text);
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .panel {
-      padding: clamp(22px, 5vw, 38px);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: white;
-      box-shadow: var(--shadow);
-    }
-
-    .panel h1,
-    .panel h2 {
-      margin-top: 0;
-      color: var(--navy);
-    }
-
-    .back-button {
-      margin-bottom: 20px;
-    }
-
-    .test-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 22px;
-    }
-
-    .test-top h1 {
-      margin: 0 0 6px;
-      font-size: clamp(1.5rem, 4vw, 2rem);
-    }
-
-    .test-top p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .phase-label {
-      display: inline-block;
-      margin-bottom: 12px;
-      padding: 5px 10px;
-      border-radius: 20px;
-      background: var(--light-blue);
-      color: var(--navy);
-      font-size: 0.8rem;
-      font-weight: 800;
-    }
-
-    .progress-track {
-      width: 100%;
-      height: 8px;
-      margin: 14px 0 28px;
-      overflow: hidden;
-      border-radius: 20px;
-      background: #e9edf3;
-    }
-
-    .progress-fill {
-      width: 0%;
-      height: 100%;
-      border-radius: inherit;
-      background: var(--blue);
-      transition: width 0.2s;
-    }
-
-    .question-number {
-      margin: 0 0 8px;
-      color: var(--muted);
-      font-size: 0.88rem;
-      font-weight: 700;
-    }
-
-    .question-text {
-      margin: 0 0 24px;
-      color: var(--text);
-      font-size: clamp(1.25rem, 3.5vw, 1.65rem);
-      line-height: 1.35;
-    }
-
-    .answer-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .answer-option {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      width: 100%;
-      padding: 15px 16px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: white;
-      color: var(--text);
-      text-align: left;
-      transition: border-color 0.15s, background 0.15s;
-    }
-
-    .answer-option:hover {
-      border-color: var(--blue);
-      background: #f8fbff;
-    }
-
-    .answer-option.selected {
-      border-color: var(--blue);
-      background: var(--light-blue);
-      box-shadow: inset 0 0 0 1px var(--blue);
-    }
-
-    .answer-letter {
-      display: grid;
-      place-items: center;
-      flex: 0 0 30px;
-      width: 30px;
-      height: 30px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: white;
-      color: var(--navy);
-      font-size: 0.85rem;
-      font-weight: 800;
-    }
-
-    .test-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin-top: 28px;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .intermission {
-      text-align: center;
-      padding-top: 24px;
-      padding-bottom: 24px;
-    }
-
-    .intermission-mark {
-      display: grid;
-      place-items: center;
-      width: 66px;
-      height: 66px;
-      margin: 0 auto 20px;
-      border-radius: 20px;
-      background: var(--light-blue);
-      color: var(--navy);
-      font-size: 1.7rem;
-      font-weight: 800;
-    }
-
-    .intermission p {
-      max-width: 590px;
-      margin: 0 auto 16px;
-      color: var(--muted);
-    }
-
-    .result-score {
-      margin: 12px 0;
-      color: var(--navy);
-      font-size: clamp(2.8rem, 8vw, 4.5rem);
-      font-weight: 800;
-      letter-spacing: -2px;
-      line-height: 1.15;
-    }
-
-    .result-caption {
-      margin: 0 0 24px;
-      color: var(--muted);
-    }
-
-    .topic-list {
-      display: grid;
-      gap: 16px;
-      margin: 24px 0;
-    }
-
-    .topic-row {
-      padding-bottom: 15px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .topic-row:last-child {
-      border-bottom: none;
-    }
-
-    .topic-row-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 8px;
-    }
-
-    .topic-row-header strong {
-      font-size: 0.95rem;
-    }
-
-    .topic-row-header span {
-      color: var(--muted);
-      font-size: 0.85rem;
-      white-space: nowrap;
-    }
-
-    .topic-bar {
-      height: 8px;
-      overflow: hidden;
-      border-radius: 20px;
-      background: #e9edf3;
-    }
-
-    .topic-bar-fill {
-      height: 100%;
-      border-radius: inherit;
-      background: var(--blue);
-    }
-
-    .review-list {
-      display: grid;
-      gap: 12px;
-      margin: 18px 0 28px;
-    }
-
-    .review-item {
-      padding: 16px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-    }
-
-    .review-item.correct {
-      border-left: 4px solid var(--green);
-    }
-
-    .review-item.incorrect {
-      border-left: 4px solid var(--red);
-    }
-
-    .review-item h3 {
-      margin: 0 0 8px;
-      font-size: 1rem;
-    }
-
-    .review-item p {
-      margin: 4px 0;
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-
-    .review-item .answer-correct {
-      color: var(--green);
-      font-weight: 700;
-    }
-
-    .review-item .answer-incorrect {
-      color: var(--red);
-      font-weight: 700;
-    }
-
-    .result-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 28px;
-    }
-
-    footer {
-      padding: 25px 4%;
-      border-top: 1px solid var(--border);
-      background: white;
-      color: var(--muted);
-      text-align: center;
-      font-size: 0.85rem;
-    }
-
-    @media (max-width: 650px) {
-      main {
-        margin-top: 22px;
-      }
-
-      .header-inner {
-        min-height: 66px;
-      }
-
-      .header-label {
-        display: none;
-      }
-
-      .hero {
-        padding: 30px 24px;
-      }
-
-      .assessment-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .test-top {
-        flex-direction: column;
-      }
-
-      .test-footer {
-        align-items: stretch;
-      }
-
-      .test-footer .button {
-        flex: 1;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas Assessments</title>
+<style>
+:root {
+  --navy: #172d50;
+  --blue: #3267c8;
+  --pale: #edf4ff;
+  --border: #dce5f1;
+  --muted: #64748b;
+  --white: #ffffff;
+  --green: #16845b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #f6f8fc;
+  color: var(--navy);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.6;
+}
+button, select { font: inherit; }
+button { cursor: pointer; }
+header {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 17px 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.brand { font-weight: 800; font-size: 1.25rem; letter-spacing: -.5px; }
+.brand span { color: var(--blue); }
+.header-label { color: var(--muted); font-size: .88rem; }
+main { width: min(920px, 92%); margin: 44px auto 70px; }
+.hero { padding: 12px 0 28px; }
+.eyebrow {
+  color: var(--blue);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+h1 { font-size: clamp(2.1rem, 5vw, 3.35rem); line-height: 1.12; letter-spacing: -1.6px; margin: 12px 0; }
+h2 { letter-spacing: -.5px; line-height: 1.25; }
+p { color: #52627a; }
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: clamp(20px, 4vw, 32px);
+  box-shadow: 0 8px 28px rgba(30, 57, 94, .045);
+  margin-bottom: 20px;
+}
+label { display: block; font-weight: 700; margin: 18px 0 8px; }
+select {
+  width: 100%;
+  background: white;
+  color: var(--navy);
+  border: 1px solid #cbd7e7;
+  border-radius: 10px;
+  padding: 12px;
+}
+button.primary {
+  border: 0;
+  background: var(--blue);
+  color: white;
+  border-radius: 10px;
+  padding: 13px 19px;
+  font-weight: 750;
+  margin-top: 18px;
+}
+button.primary:hover { background: #2454a9; }
+button.secondary {
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--navy);
+  border-radius: 10px;
+  padding: 11px 15px;
+  font-weight: 700;
+}
+button:focus-visible, select:focus-visible {
+  outline: 3px solid #91b7ff;
+  outline-offset: 3px;
+}
+.full { width: 100%; }
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 22px 0;
+}
+.feature {
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 17px;
+  background: white;
+}
+.feature strong { display: block; margin-bottom: 5px; }
+.feature p { font-size: .9rem; margin: 0; }
+.notice {
+  background: var(--pale);
+  border: 1px solid #d7e5ff;
+  padding: 14px 16px;
+  border-radius: 12px;
+  color: #36527d;
+  font-size: .9rem;
+}
+.hidden { display: none !important; }
+.topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  color: var(--muted);
+  font-size: .9rem;
+}
+.progress {
+  height: 7px;
+  border-radius: 20px;
+  background: #e7edf6;
+  overflow: hidden;
+  margin: 14px 0 25px;
+}
+.progress div { height: 100%; background: var(--blue); width: 0; transition: width .2s; }
+.question { font-size: clamp(1.25rem, 3vw, 1.75rem); color: var(--navy); margin: 18px 0 22px; }
+.answers { display: grid; gap: 11px; }
+.answer {
+  border: 1px solid #d5dfed;
+  border-radius: 11px;
+  background: white;
+  color: var(--navy);
+  text-align: left;
+  padding: 14px 16px;
+}
+.answer:hover:not(:disabled) { border-color: var(--blue); background: #f7faff; }
+.answer:disabled { cursor: default; opacity: 1; }
+.answer.correct { border-color: #5ab994; background: #eaf8f1; }
+.answer.incorrect { border-color: #e6a0a0; background: #fff0f0; }
+.feedback { margin-top: 17px; padding: 13px 15px; border-radius: 10px; }
+.feedback.good { background: #eaf8f1; color: #176746; }
+.feedback.bad { background: #fff0f0; color: #8b3030; }
+.feedback p { margin: 4px 0 0; color: inherit; }
+.topic-row { margin: 18px 0; }
+.topic-heading { display: flex; justify-content: space-between; gap: 12px; font-size: .94rem; }
+.mini-track { background: #e9eef6; height: 9px; border-radius: 10px; margin-top: 7px; overflow: hidden; }
+.mini-track div { height: 100%; background: var(--blue); border-radius: 10px; }
+.result-number { font-size: 2.8rem; line-height: 1.2; font-weight: 850; color: var(--blue); }
+.small { font-size: .87rem; color: var(--muted); }
+footer {
+  border-top: 1px solid var(--border);
+  background: white;
+  text-align: center;
+  padding: 23px;
+  font-size: .85rem;
+  color: var(--muted);
+}
+@media (max-width: 650px) {
+  main { margin-top: 27px; }
+  .features { grid-template-columns: 1fr; }
+  header { padding: 14px 5%; }
+  .header-label { font-size: .78rem; }
+}
+</style>
 </head>
-
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="brand">
-        <div class="brand-mark">A</div>
-        <span>Atlas Assessments</span>
-      </div>
-      <div class="header-label">Learning. Measured thoughtfully.</div>
+<header>
+  <div class="brand">ATLAS <span>ASSESSMENTS</span></div>
+  <div class="header-label">Growth Assessments</div>
+</header>
+
+<main>
+  <section id="home">
+    <div class="hero">
+      <div class="eyebrow">Learn. Measure. Grow.</div>
+      <h1>Discover what you know.<br>See where you can grow.</h1>
+      <p>Atlas Growth Assessments helps students explore their current academic skills, identify strengths, and discover what to learn next.</p>
     </div>
-  </header>
 
-  <main>
-    <!-- HOME PAGE -->
-    <section id="home">
-      <div class="hero">
-        <p class="eyebrow">A different way to understand learning</p>
-        <h1>Discover what you know. Understand what comes next.</h1>
-        <p>
-          Atlas Assessments is a developing academic assessment project
-          designed to explore student achievement, identify learning needs,
-          and make progress easier to understand.
-        </p>
+    <div class="features">
+      <div class="feature">
+        <strong>01 · Adaptive</strong>
+        <p>Questions adjust as you answer, helping explore different levels of difficulty.</p>
       </div>
-
-      <div class="section-heading">
-        <h2>Explore assessments</h2>
-        <p>Choose an assessment category to get started.</p>
+      <div class="feature">
+        <strong>02 · Broad coverage</strong>
+        <p>Explore multiple math skills, not just one topic.</p>
       </div>
-
-      <div class="assessment-grid">
-        <article class="assessment-card">
-          <div class="card-top">
-            <div class="card-icon">S</div>
-            <span class="status">Available</span>
-          </div>
-          <h3>Standard Assessments</h3>
-          <p>
-            Explore questions aligned with the skills students are generally
-            expected to learn at a selected grade level. Follow-up questions
-            help investigate topics that may need more practice.
-          </p>
-          <button class="button" id="standardButton">
-            Explore Standard Tests
-          </button>
-        </article>
-
-        <article class="assessment-card">
-          <div class="card-top">
-            <div class="card-icon">G</div>
-            <span class="status soon">In development</span>
-          </div>
-          <h3>Growth Assessments</h3>
-          <p>
-            A separate assessment concept intended to estimate a student's
-            current academic level across different grades and track changes
-            over time using a future calibrated scoring model.
-          </p>
-          <button class="button secondary" id="growthButton">
-            Explore Growth Tests
-          </button>
-        </article>
+      <div class="feature">
+        <strong>03 · Growth focused</strong>
+        <p>Use results to identify strengths and plan what to practice next.</p>
       </div>
+    </div>
 
-      <div class="section-heading">
-        <h2>Subjects</h2>
-        <p>More subject assessments will be introduced as development continues.</p>
+    <div class="card">
+      <div class="eyebrow">Get started</div>
+      <h2>Your math growth assessment</h2>
+      <p>Choose your current grade to set a starting point. You can choose another grade if you'd prefer to explore a different level.</p>
+
+      <label for="currentGrade">What grade are you currently in?</label>
+      <select id="currentGrade"></select>
+
+      <label for="startGrade">Which grade should the assessment start around?</label>
+      <select id="startGrade"></select>
+
+      <button class="primary full" id="startButton">Begin math assessment →</button>
+      <p class="small">This prototype is for learning and exploration. It is not an official or standardized test.</p>
+    </div>
+
+    <div class="card">
+      <h2>Previous results</h2>
+      <p>Results saved on this browser will appear here. They won't automatically follow you to another device.</p>
+      <div id="history"><p class="small">No assessments completed yet.</p></div>
+      <button class="secondary hidden" id="clearHistory">Clear local history</button>
+    </div>
+  </section>
+
+  <section id="quiz" class="hidden">
+    <div class="card">
+      <div class="topline">
+        <span id="questionCounter">Question 1</span>
+        <span id="levelLabel">Starting level</span>
       </div>
+      <div class="progress"><div id="progressBar"></div></div>
+      <div class="eyebrow" id="topicLabel">Mathematics</div>
+      <h2 class="question" id="questionText"></h2>
+      <div class="answers" id="answers"></div>
+      <div id="feedback" class="hidden" aria-live="polite"></div>
+      <button id="nextButton" class="primary full hidden">Next question →</button>
+      <button id="quitButton" class="secondary full">End assessment</button>
+    </div>
+    <p class="small">Your answers help this prototype explore different difficulty levels. A short assessment cannot measure every skill.</p>
+  </section>
 
-      <div class="assessment-grid">
-        <article class="assessment-card">
-          <div class="card-top">
-            <div class="card-icon">M</div>
-            <span class="status">First subject</span>
-          </div>
-          <h3>Mathematics</h3>
-          <p>
-            Number sense, operations, shapes, measurement, patterns,
-            and other mathematical skills.
-          </p>
-          <button class="button" id="mathButton">Explore Mathematics</button>
-        </article>
+  <section id="results" class="hidden">
+    <div class="card">
+      <div class="eyebrow">Assessment complete</div>
+      <h1>Your learning snapshot</h1>
+      <p id="resultIntro"></p>
+      <div class="result-number" id="resultPercent">0%</div>
+      <div class="small">Questions answered correctly</div>
+      <div class="progress"><div id="resultBar"></div></div>
+      <p id="levelSummary"></p>
+      <div class="notice">This is an experimental practice result based on a small prototype question bank. It is not a grade placement, IQ score, standardized score, or complete measure of your math ability.</div>
+    </div>
+    <div class="card">
+      <h2>Skills snapshot</h2>
+      <p>These topic summaries are based only on the questions you answered in this session.</p>
+      <div id="topicResults"></div>
+    </div>
+    <div class="card">
+      <h2>What to practice next</h2>
+      <div id="recommendations"></div>
+      <button class="primary full" id="againButton">Take another assessment</button>
+      <button class="secondary full" id="homeButton">Back to home</button>
+    </div>
+  </section>
+</main>
 
-        <article class="assessment-card">
-          <div class="card-top">
-            <div class="card-icon">R</div>
-            <span class="status soon">In development</span>
-          </div>
-          <h3>Reading</h3>
-          <p>Reading comprehension, vocabulary, and related literacy skills.</p>
-          <button class="button secondary" id="readingButton">
-            Explore Reading
-          </button>
-        </article>
+<footer>
+  Atlas Assessments · Growth over time, one step at a time.
+</footer>
 
-        <article class="assessment-card">
-          <div class="card-top">
-            <div class="card-icon">S</div>
-            <span class="status soon">In development</span>
-          </div>
-          <h3>Science</h3>
-          <p>Scientific concepts, investigation, and evidence-based reasoning.</p>
-          <button class="button secondary" id="scienceButton">
-            Explore Science
-          </button>
-        </article>
+<script>
+const $ = id => document.getElementById(id);
 
-        <article class="assessment-card">
-          <div class="card-top">
-            <div class="card-icon">H</div>
-            <span class="status soon">In development</span>
-          </div>
-          <h3>Social Studies</h3>
-          <p>History, geography, civics, economics, and related skills.</p>
-          <button class="button secondary" id="socialStudiesButton">
-            Explore Social Studies
-          </button>
-        </article>
+const gradeNames = [
+  "Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4",
+  "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9",
+  "Grade 10", "Grade 11", "Grade 12"
+];
 
-        <article class="assessment-card">
-          <div class="card-top">
-            <div class="card-icon">W</div>
-            <span class="status soon">In development</span>
-          </div>
-          <h3>Writing</h3>
-          <p>Writing skills, organization, communication, and written responses.</p>
-          <button class="button secondary" id="writingButton">
-            Explore Writing
-          </button>
-        </article>
-      </div>
+function gradeName(n) {
+  return gradeNames[Math.max(0, Math.min(12, n))];
+}
 
-      <div class="notice">
-        <strong>About Atlas:</strong> This website is an independent prototype.
-        Its current questions and results are for practice and experimentation.
-        They are not official school assessments, and its scores are not
-        standardized or validated measures of academic achievement.
-      </div>
-    </section>
-
-    <!-- TEST SELECTION PAGE -->
-    <section id="selection" class="hidden">
-      <button class="button secondary back-button" id="selectionBack">
-        ← Back to Home
-      </button>
-
-      <div class="panel">
-        <p class="eyebrow">Assessment selection</p>
-        <h1 id="selectionTitle">Standard Assessments</h1>
-        <p id="selectionDescription">
-          Choose an available assessment below.
-        </p>
-
-        <div class="assessment-card" style="margin-top: 24px;">
-          <div class="card-top">
-            <div class="card-icon">K</div>
-            <span class="status">Available</span>
-          </div>
-          <h3>Kindergarten Mathematics</h3>
-          <p>
-            A beginner-friendly math assessment covering counting,
-            comparing numbers, addition, subtraction, shapes, measurement,
-            spatial reasoning, and patterns.
-          </p>
-          <p class="muted">
-            The assessment begins with 12 baseline questions. Your responses
-            determine which topics receive additional questions.
-          </p>
-          <button class="button" id="startTestButton">
-            Begin Assessment
-          </button>
-        </div>
-
-        <div class="notice">
-          <strong>Coming later:</strong> Additional grades, other subjects,
-          and Growth Assessments will be added as their question banks
-          and scoring systems are developed.
-        </div>
-      </div>
-    </section>
-
-    <!-- ASSESSMENT PAGE -->
-    <section id="test" class="hidden">
-      <div class="panel">
-        <button class="button secondary back-button" id="cancelTestButton">
-          ← Exit Assessment
-        </button>
-
-        <div class="test-top">
-          <div>
-            <p class="eyebrow">Atlas Assessments</p>
-            <h1 id="testTitle">Kindergarten Mathematics</h1>
-            <p id="testDescription">Answer each question to the best of your ability.</p>
-          </div>
-        </div>
-
-        <span class="phase-label" id="phaseLabel">Baseline Assessment</span>
-
-        <div
-          class="progress-track"
-          role="progressbar"
-          aria-label="Assessment progress"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          aria-valuenow="0"
-          id="progressTrack"
-        >
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
-
-        <p class="question-number" id="questionNumber">Question 1</p>
-        <h2 class="question-text" id="questionText"></h2>
-
-        <div class="answer-list" id="answerList"></div>
-
-        <div class="test-footer">
-          <span class="muted" id="answeredStatus">Choose one answer.</span>
-          <button class="button" id="nextButton" disabled>
-            Next Question →
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- BETWEEN BASELINE AND FOLLOW-UP -->
-    <section id="intermission" class="hidden">
-      <div class="panel intermission">
-        <div class="intermission-mark">A</div>
-        <p class="eyebrow">Baseline complete</p>
-        <h1>Let's take a closer look.</h1>
-        <p>
-          Your baseline responses are being used to select additional
-          questions for this assessment. The assessment is not finished yet.
-        </p>
-        <p>
-          You'll receive your results after completing the next set of questions.
-        </p>
-        <button class="button" id="continueFollowUpButton">
-          Continue Assessment →
-        </button>
-      </div>
-    </section>
-
-    <!-- RESULTS PAGE -->
-    <section id="results" class="hidden">
-      <div class="panel">
-        <p class="eyebrow">Assessment complete</p>
-        <h1>Your Results</h1>
-        <p class="muted">
-          Here's a summary of your answers across the baseline and
-          follow-up questions.
-        </p>
-
-        <div class="result-score" id="scorePercent">0%</div>
-        <p class="result-caption" id="scoreSummary"></p>
-
-        <div class="notice">
-          <strong>Remember:</strong> This is an experimental practice score
-          from a small prototype question bank. It is not a standardized
-          score, a grade placement decision, or a validated measure of mastery.
-        </div>
-
-        <div class="section-heading">
-          <h2>Topic breakdown</h2>
-          <p>See how you answered questions from each topic.</p>
-        </div>
-
-        <div class="topic-list" id="topicResults"></div>
-
-        <div class="section-heading">
-          <h2>Answer review</h2>
-          <p>Review each question and its correct answer.</p>
-        </div>
-
-        <div class="review-list" id="answerReview"></div>
-
-        <div class="result-actions">
-          <button class="button" id="retakeButton">Retake Assessment</button>
-          <button class="button secondary" id="resultsHomeButton">
-            Return Home
-          </button>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <strong>Atlas Assessments</strong> · Independent educational prototype
-    <br>
-    Built to explore learning, assessment, and student progress.
-  </footer>
-
-  <script>
-    // --------------------------------------------------
-    // QUESTION BANK
-    // --------------------------------------------------
-
-    const baselineQuestions = [
-      {
-        topic: "Counting and Numbers",
-        question: "What number comes after 4?",
-        options: ["3", "5", "7", "2"],
-        answer: 1
-      },
-      {
-        topic: "Counting and Numbers",
-        question: "How many stars are here? ★ ★ ★",
-        options: ["2", "4", "3", "5"],
-        answer: 2
-      },
-      {
-        topic: "Comparing Numbers",
-        question: "Which number is greater?",
-        options: ["2", "5", "They are equal", "0"],
-        answer: 1
-      },
-      {
-        topic: "Addition",
-        question: "What is 2 + 1?",
-        options: ["1", "2", "3", "4"],
-        answer: 2
-      },
-      {
-        topic: "Addition",
-        question: "You have 3 apples and get 2 more. How many apples do you have?",
-        options: ["4", "5", "6", "2"],
-        answer: 1
-      },
-      {
-        topic: "Subtraction",
-        question: "What is 4 − 1?",
-        options: ["2", "3", "4", "5"],
-        answer: 1
-      },
-      {
-        topic: "Subtraction",
-        question: "There are 5 balloons. One balloon floats away. How many remain?",
-        options: ["3", "5", "4", "2"],
-        answer: 2
-      },
-      {
-        topic: "Shapes",
-        question: "Which shape has three sides?",
-        options: ["Circle", "Triangle", "Square", "Rectangle"],
-        answer: 1
-      },
-      {
-        topic: "Shapes",
-        question: "Which shape is round and has no corners?",
-        options: ["Triangle", "Square", "Circle", "Rectangle"],
-        answer: 2
-      },
-      {
-        topic: "Spatial Reasoning",
-        question: "A teddy bear is under a table. Where is the teddy bear?",
-        options: ["Above the table", "Under the table", "Inside the table", "Beside the sky"],
-        answer: 1
-      },
-      {
-        topic: "Measurement",
-        question: "Which object is usually taller?",
-        options: ["A building", "A pencil", "A small button", "A coin"],
-        answer: 0
-      },
-      {
-        topic: "Patterns",
-        question: "What comes next in this pattern? Red, blue, red, blue, ...",
-        options: ["Green", "Red", "Yellow", "Purple"],
-        answer: 1
-      }
-    ];
-
-    // Each topic has two additional questions.
-    // Topics with missed baseline questions receive their follow-ups.
-
-    const followUpQuestions = {
-      "Counting and Numbers": [
-        {
-          topic: "Counting and Numbers",
-          question: "What number comes before 7?",
-          options: ["5", "6", "8", "9"],
-          answer: 1
-        },
-        {
-          topic: "Counting and Numbers",
-          question: "Which group has exactly four dots?",
-          options: ["● ●", "● ● ●", "● ● ● ●", "● ● ● ● ●"],
-          answer: 2
-        }
-      ],
-
-      "Comparing Numbers": [
-        {
-          topic: "Comparing Numbers",
-          question: "Which number is smaller?",
-          options: ["6", "2", "9", "7"],
-          answer: 1
-        },
-        {
-          topic: "Comparing Numbers",
-          question: "Which statement is true?",
-          options: ["1 is greater than 4", "3 is less than 5", "6 is less than 2", "2 is greater than 8"],
-          answer: 1
-        }
-      ],
-
-      "Addition": [
-        {
-          topic: "Addition",
-          question: "What is 3 + 2?",
-          options: ["4", "5", "6", "1"],
-          answer: 1
-        },
-        {
-          topic: "Addition",
-          question: "You have 1 toy and receive 3 more. How many toys do you have?",
-          options: ["2", "3", "4", "5"],
-          answer: 2
-        }
-      ],
-
-      "Subtraction": [
-        {
-          topic: "Subtraction",
-          question: "What is 5 − 2?",
-          options: ["2", "3", "4", "7"],
-          answer: 1
-        },
-        {
-          topic: "Subtraction",
-          question: "There are 4 cookies. You eat 1. How many cookies are left?",
-          options: ["1", "2", "3", "4"],
-          answer: 2
-        }
-      ],
-
-      "Shapes": [
-        {
-          topic: "Shapes",
-          question: "How many sides does a square have?",
-          options: ["3", "4", "5", "0"],
-          answer: 1
-        },
-        {
-          topic: "Shapes",
-          question: "Which shape has four sides and four corners?",
-          options: ["Circle", "Triangle", "Square", "Oval"],
-          answer: 2
-        }
-      ],
-
-      "Spatial Reasoning": [
-        {
-          topic: "Spatial Reasoning",
-          question: "A ball is on top of a box. Where is the ball?",
-          options: ["Below the box", "Above the box", "Inside the floor", "Under the box"],
-          answer: 1
-        },
-        {
-          topic: "Spatial Reasoning",
-          question: "Your shoes are beside the door. Where are the shoes?",
-          options: ["Next to the door", "On the moon", "Inside the sky", "Far above the house"],
-          answer: 0
-        }
-      ],
-
-      "Measurement": [
-        {
-          topic: "Measurement",
-          question: "Which is usually heavier?",
-          options: ["A feather", "A large rock", "A small leaf", "A piece of paper"],
-          answer: 1
-        },
-        {
-          topic: "Measurement",
-          question: "Which would you use to measure how long a book is?",
-          options: ["A ruler", "A spoon", "A pillow", "A cup"],
-          answer: 0
-        }
-      ],
-
-      "Patterns": [
-        {
-          topic: "Patterns",
-          question: "What comes next? 1, 2, 1, 2, ...",
-          options: ["3", "1", "4", "5"],
-          answer: 1
-        },
-        {
-          topic: "Patterns",
-          question: "What comes next? Circle, square, circle, square, ...",
-          options: ["Triangle", "Circle", "Star", "Rectangle"],
-          answer: 1
-        }
-      ]
-    };
-
-    // If all baseline questions are correct, ask a small confirmation set
-    // rather than showing the results immediately.
-
-    const confirmationQuestions = [
-      {
-        topic: "Counting and Numbers",
-        question: "What number comes after 9?",
-        options: ["8", "10", "7", "6"],
-        answer: 1
-      },
-      {
-        topic: "Addition",
-        question: "What is 4 + 2?",
-        options: ["5", "6", "7", "3"],
-        answer: 1
-      },
-      {
-        topic: "Shapes",
-        question: "Which shape has no straight sides?",
-        options: ["Triangle", "Square", "Circle", "Rectangle"],
-        answer: 2
-      }
-    ];
-
-    // --------------------------------------------------
-    // PAGE NAVIGATION
-    // --------------------------------------------------
-
-    const pages = ["home", "selection", "test", "intermission", "results"];
-
-    function showPage(pageId) {
-      pages.forEach(function(id) {
-        document.getElementById(id).classList.toggle("hidden", id !== pageId);
-      });
-
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function showNotice(message) {
-      alert(message);
-    }
-
-    document.getElementById("standardButton").addEventListener("click", function() {
-      openSelection("Standard Assessments",
-        "Standard Assessments focus on skills generally expected at a selected grade level.");
+function fillGrades() {
+  ["currentGrade", "startGrade"].forEach(id => {
+    $(id).innerHTML = "";
+    gradeNames.forEach((name, index) => {
+      const option = document.createElement("option");
+      option.value = index;
+      option.textContent = name;
+      $(id).appendChild(option);
     });
-
-    document.getElementById("growthButton").addEventListener("click", function() {
-      showNotice("Growth Assessments are still in development. They will need a separate adaptive testing and calibrated scoring system.");
-    });
-
-    document.getElementById("mathButton").addEventListener("click", function() {
-      openSelection("Mathematics",
-        "Explore mathematics assessments currently being developed for Atlas.");
-    });
-
-    [
-      "readingButton",
-      "scienceButton",
-      "socialStudiesButton",
-      "writingButton"
-    ].forEach(function(id) {
-      document.getElementById(id).addEventListener("click", function() {
-        showNotice("This subject is still in development. Mathematics is the first subject being built.");
-      });
-    });
-
-    function openSelection(title, description) {
-      document.getElementById("selectionTitle").textContent = title;
-      document.getElementById("selectionDescription").textContent = description;
-      showPage("selection");
-    }
-
-    document.getElementById("selectionBack").addEventListener("click", function() {
-      showPage("home");
-    });
-
-    // --------------------------------------------------
-    // ASSESSMENT STATE
-    // --------------------------------------------------
-
-    let currentPhase = "baseline";
-    let currentQuestions = [];
-    let currentIndex = 0;
-    let selectedAnswer = null;
-    let allResponses = [];
-    let targetedTopics = [];
-
-    function startAssessment() {
-      currentPhase = "baseline";
-      currentQuestions = baselineQuestions.map(function(question) {
-        return { ...question };
-      });
-      currentIndex = 0;
-      selectedAnswer = null;
-      allResponses = [];
-      targetedTopics = [];
-
-      document.getElementById("testTitle").textContent = "Kindergarten Mathematics";
-      document.getElementById("testDescription").textContent =
-        "Answer each question to the best of your ability.";
-      document.getElementById("phaseLabel").textContent = "Baseline Assessment";
-
-      showPage("test");
-      renderQuestion();
-    }
-
-    document.getElementById("startTestButton").addEventListener("click", startAssessment);
-
-    document.getElementById("cancelTestButton").addEventListener("click", function() {
-      const shouldExit = confirm("Exit this assessment? Your current answers will not be saved.");
-      if (shouldExit) {
-        showPage("selection");
-      }
-    });
-
-    // --------------------------------------------------
-    // QUESTION DISPLAY
-    // --------------------------------------------------
-
-    function renderQuestion() {
-      const question = currentQuestions[currentIndex];
-
-      selectedAnswer = null;
-
-      document.getElementById("phaseLabel").textContent =
-        currentPhase === "baseline"
-          ? "Baseline Assessment"
-          : currentPhase === "followup"
-            ? "Targeted Follow-Up"
-            : "Additional Questions";
-
-      document.getElementById("questionNumber").textContent =
-        "Question " + (currentIndex + 1) + " of " + currentQuestions.length;
-
-      document.getElementById("questionText").textContent = question.question;
-
-      const progress = ((currentIndex) / currentQuestions.length) * 100;
-      document.getElementById("progressFill").style.width = progress + "%";
-      document.getElementById("progressTrack").setAttribute("aria-valuenow", String(Math.round(progress)));
-
-      const answerList = document.getElementById("answerList");
-      answerList.replaceChildren();
-
-      question.options.forEach(function(option, index) {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "answer-option";
-
-        const letter = document.createElement("span");
-        letter.className = "answer-letter";
-        letter.textContent = String.fromCharCode(65 + index);
-
-        const answerText = document.createElement("span");
-        answerText.textContent = option;
-
-        button.append(letter, answerText);
-
-        button.addEventListener("click", function() {
-          selectedAnswer = index;
-
-          answerList.querySelectorAll(".answer-option").forEach(function(optionButton) {
-            optionButton.classList.remove("selected");
-          });
-
-          button.classList.add("selected");
-          document.getElementById("nextButton").disabled = false;
-          document.getElementById("answeredStatus").textContent = "Answer selected.";
-        });
-
-        answerList.appendChild(button);
-      });
-
-      document.getElementById("nextButton").disabled = true;
-      document.getElementById("answeredStatus").textContent = "Choose one answer.";
-
-      document.getElementById("nextButton").textContent =
-        currentIndex === currentQuestions.length - 1
-          ? "Finish Section →"
-          : "Next Question →";
-    }
-
-    document.getElementById("nextButton").addEventListener("click", function() {
-      if (selectedAnswer === null) return;
-
-      const question = currentQuestions[currentIndex];
-
-      allResponses.push({
-        topic: question.topic,
-        question: question.question,
-        options: question.options,
-        answer: question.answer,
-        selected: selectedAnswer,
-        phase: currentPhase
-      });
-
-      if (currentIndex < currentQuestions.length - 1) {
-        currentIndex++;
-        renderQuestion();
-        return;
-      }
-
-      if (currentPhase === "baseline") {
-        prepareFollowUp();
-      } else {
-        showResults();
-      }
-    });
-
-    // --------------------------------------------------
-    // TARGETED FOLLOW-UP LOGIC
-    // --------------------------------------------------
-
-    function prepareFollowUp() {
-      const baselineResponses = allResponses.filter(function(response) {
-        return response.phase === "baseline";
-      });
-
-      const missedTopics = new Set();
-
-      baselineResponses.forEach(function(response) {
-        if (response.selected !== response.answer) {
-          missedTopics.add(response.topic);
-        }
-      });
-
-      targetedTopics = Array.from(missedTopics);
-
-      if (targetedTopics.length > 0) {
-        currentPhase = "followup";
-        currentQuestions = [];
-
-        targetedTopics.forEach(function(topic) {
-          const topicQuestions = followUpQuestions[topic] || [];
-          topicQuestions.forEach(function(question) {
-            currentQuestions.push({ ...question });
-          });
-        });
-      } else {
-        currentPhase = "confirmation";
-        currentQuestions = confirmationQuestions.map(function(question) {
-          return { ...question };
-        });
-      }
-
-      currentIndex = 0;
-      showPage("intermission");
-    }
-
-    document.getElementById("continueFollowUpButton").addEventListener("click", function() {
-      document.getElementById("testDescription").textContent =
-        "Continue answering. Your results will appear when the assessment is complete.";
-
-      showPage("test");
-      renderQuestion();
-    });
-
-    // --------------------------------------------------
-    // RESULTS
-    // --------------------------------------------------
-
-    function showResults() {
-      const total = allResponses.length;
-      const correct = allResponses.filter(function(response) {
-        return response.selected === response.answer;
-      }).length;
-
-      const percentage = total === 0 ? 0 : Math.round((correct / total) * 100);
-
-      document.getElementById("progressFill").style.width = "100%";
-      document.getElementById("progressTrack").setAttribute("aria-valuenow", "100");
-
-      document.getElementById("scorePercent").textContent = percentage + "%";
-      document.getElementById("scoreSummary").textContent =
-        "You answered " + correct + " out of " + total +
-        " questions correctly across the complete assessment.";
-
-      renderTopicResults();
-      renderAnswerReview();
-
-      showPage("results");
-    }
-
-    function renderTopicResults() {
-      const topicResults = document.getElementById("topicResults");
-      topicResults.replaceChildren();
-
-      const topics = {};
-
-      allResponses.forEach(function(response) {
-        if (!topics[response.topic]) {
-          topics[response.topic] = { correct: 0, total: 0 };
-        }
-
-        topics[response.topic].total++;
-
-        if (response.selected === response.answer) {
-          topics[response.topic].correct++;
-        }
-      });
-
-      Object.keys(topics).forEach(function(topic) {
-        const result = topics[topic];
-        const percentage = Math.round((result.correct / result.total) * 100);
-
-        const row = document.createElement("div");
-        row.className = "topic-row";
-
-        const header = document.createElement("div");
-        header.className = "topic-row-header";
-
-        const name = document.createElement("strong");
-        name.textContent = topic;
-
-        const score = document.createElement("span");
-        score.textContent = result.correct + " of " + result.total +
-          " correct (" + percentage + "%)";
-
-        header.append(name, score);
-
-        const bar = document.createElement("div");
-        bar.className = "topic-bar";
-        bar.setAttribute("role", "img");
-        bar.setAttribute("aria-label", topic + ": " + percentage + "% correct");
-
-        const fill = document.createElement("div");
-        fill.className = "topic-bar-fill";
-        fill.style.width = percentage + "%";
-
-        bar.appendChild(fill);
-        row.append(header, bar);
-        topicResults.appendChild(row);
-      });
-    }
-
-    function renderAnswerReview() {
-      const answerReview = document.getElementById("answerReview");
-      answerReview.replaceChildren();
-
-      allResponses.forEach(function(response, index) {
-        const isCorrect = response.selected === response.answer;
-
-        const item = document.createElement("article");
-        item.className = "review-item " + (isCorrect ? "correct" : "incorrect");
-
-        const heading = document.createElement("h3");
-        heading.textContent = (index + 1) + ". " + response.question;
-
-        const topic = document.createElement("p");
-        topic.textContent = "Topic: " + response.topic;
-
-        const yourAnswer = document.createElement("p");
-        yourAnswer.textContent = "Your answer: " + response.options[response.selected];
-        yourAnswer.className = isCorrect ? "answer-correct" : "answer-incorrect";
-
-        const correctAnswer = document.createElement("p");
-        correctAnswer.textContent = "Correct answer: " + response.options[response.answer];
-
-        item.append(heading, topic, yourAnswer);
-
-        if (!isCorrect) {
-          item.appendChild(correctAnswer);
-        } else {
-          const status = document.createElement("p");
-          status.className = "answer-correct";
-          status.textContent = "Correct";
-          item.appendChild(status);
-        }
-
-        answerReview.appendChild(item);
-      });
-    }
-
-    document.getElementById("retakeButton").addEventListener("click", startAssessment);
-
-    document.getElementById("resultsHomeButton").addEventListener("click", function() {
-      showPage("home");
-    });
-  </script>
+  });
+  $("currentGrade").value = "6";
+  $("startGrade").value = "6";
+}
+
+$("currentGrade").addEventListener("change", () => {
+  $("startGrade").value = $("currentGrade").value;
+});
+
+/*
+  Prototype question bank.
+  grade = approximate school level, not a validated difficulty calibration.
+  Each question has a topic, choices, correct answer index, and explanation.
+*/
+const questions = [
+  {id:1,grade:0,topic:"Number sense",q:"Which number comes after 6?",a:["5","7","9","3"],c:1,e:"Counting forward from 6 gives 7."},
+  {id:2,grade:0,topic:"Addition",q:"You have 2 blocks and get 1 more. How many blocks do you have?",a:["1","2","3","4"],c:2,e:"2 + 1 = 3."},
+  {id:3,grade:1,topic:"Addition",q:"What is 8 + 5?",a:["12","13","14","15"],c:1,e:"8 + 5 = 13."},
+  {id:4,grade:1,topic:"Place value",q:"In the number 42, what does the 4 represent?",a:["4 ones","4 tens","4 hundreds","40 ones only"],c:1,e:"The 4 is in the tens place, so it represents 40."},
+  {id:5,grade:2,topic:"Subtraction",q:"What is 54 − 27?",a:["27","37","31","23"],c:0,e:"54 − 27 = 27."},
+  {id:6,grade:2,topic:"Place value",q:"Which number has 6 hundreds, 2 tens, and 5 ones?",a:["625","652","265","605"],c:0,e:"600 + 20 + 5 = 625."},
+  {id:7,grade:3,topic:"Multiplication",q:"What is 7 × 8?",a:["48","54","56","64"],c:2,e:"7 groups of 8 make 56."},
+  {id:8,grade:3,topic:"Fractions",q:"A pizza is cut into 4 equal slices. You eat 1 slice. What fraction did you eat?",a:["1/2","1/3","1/4","4/1"],c:2,e:"One out of four equal slices is 1/4."},
+  {id:9,grade:4,topic:"Division",q:"What is 96 ÷ 8?",a:["10","11","12","14"],c:2,e:"8 × 12 = 96, so 96 ÷ 8 = 12."},
+  {id:10,grade:4,topic:"Decimals",q:"Which decimal is greatest?",a:["0.45","0.5","0.39","0.09"],c:1,e:"0.50 is greater than 0.45, 0.39, and 0.09."},
+  {id:11,grade:5,topic:"Fractions",q:"What is 1/4 + 2/4?",a:["3/8","3/4","2/4","1/2"],c:1,e:"With the same denominator, add the numerators: 1/4 + 2/4 = 3/4."},
+  {id:12,grade:5,topic:"Volume",q:"A rectangular prism is 3 units long, 2 units wide, and 4 units tall. What is its volume?",a:["9 cubic units","12 cubic units","24 cubic units","18 cubic units"],c:2,e:"Volume = length × width × height = 3 × 2 × 4 = 24."},
+  {id:13,grade:6,topic:"Ratios",q:"A recipe uses 2 cups of rice for every 3 cups of water. How much water is needed for 6 cups of rice?",a:["6 cups","7 cups","8 cups","9 cups"],c:3,e:"The rice amount is multiplied by 3, so the water amount is 3 × 3 = 9 cups."},
+  {id:14,grade:6,topic:"Expressions",q:"If x = 4, what is 3x + 2?",a:["14","18","20","10"],c:0,e:"Substitute 4 for x: 3(4) + 2 = 14."},
+  {id:15,grade:7,topic:"Proportions",q:"A car travels 150 miles in 3 hours at a constant speed. What is its average speed?",a:["30 mph","45 mph","50 mph","60 mph"],c:2,e:"150 ÷ 3 = 50 miles per hour."},
+  {id:16,grade:7,topic:"Integers",q:"What is −6 + 10?",a:["−16","−4","4","16"],c:2,e:"Moving 10 units right from −6 gives 4."},
+  {id:17,grade:8,topic:"Linear equations",q:"Solve: 3x − 5 = 16.",a:["5","6","7","8"],c:2,e:"Add 5 to get 3x = 21, then divide by 3: x = 7."},
+  {id:18,grade:8,topic:"Exponents",q:"What is 2³ × 2²?",a:["2⁵ = 32","4⁶ = 4096","2⁶ = 64","4⁵ = 1024"],c:0,e:"When multiplying powers with the same base, add exponents: 2⁵ = 32."},
+  {id:19,grade:9,topic:"Algebra",q:"Solve: 2(x + 3) = 18.",a:["x = 3","x = 6","x = 9","x = 12"],c:1,e:"Divide by 2 to get x + 3 = 9, so x = 6."},
+  {id:20,grade:9,topic:"Functions",q:"If f(x) = 2x − 1, what is f(5)?",a:["9","10","11","4"],c:0,e:"f(5) = 2(5) − 1 = 9."},
+  {id:21,grade:10,topic:"Quadratics",q:"What are the solutions to x² = 49?",a:["7 only","−7 only","−7 and 7","24 and 25"],c:2,e:"Both 7² and (−7)² equal 49."},
+  {id:22,grade:10,topic:"Geometry",q:"What is the sum of the interior angles of a triangle in Euclidean geometry?",a:["90°","180°","270°","360°"],c:1,e:"The interior angles of a triangle add up to 180°."},
+  {id:23,grade:11,topic:"Statistics",q:"A data set is 2, 4, 4, 5, 10. What is its median?",a:["2","4","5","10"],c:1,e:"The median is the middle value in the ordered list: 4."},
+  {id:24,grade:11,topic:"Probability",q:"A fair six-sided die is rolled once. What is the probability of rolling an even number?",a:["1/6","1/3","1/2","2/3"],c:2,e:"Three of the six outcomes are even, so the probability is 3/6 = 1/2."},
+  {id:25,grade:12,topic:"Exponential functions",q:"For f(x) = 3 × 2ˣ, what is f(2)?",a:["7","12","18","24"],c:1,e:"f(2) = 3 × 2² = 12."},
+  {id:26,grade:12,topic:"Algebra",q:"If x² − 5x + 6 = 0, which pair gives the solutions?",a:["1 and 6","−2 and −3","2 and 3","−1 and −6"],c:2,e:"Factor: (x − 2)(x − 3) = 0, so x = 2 or x = 3."},
+  {id:27,grade:3,topic:"Fractions",q:"Which fraction is equivalent to 1/2?",a:["2/3","2/4","3/4","1/4"],c:1,e:"Multiplying the numerator and denominator of 1/2 by 2 gives 2/4."},
+  {id:28,grade:4,topic:"Multiplication",q:"What is 24 × 6?",a:["124","134","144","154"],c:2,e:"24 × 6 = 144."},
+  {id:29,grade:6,topic:"Negative numbers",q:"Which value is the smallest?",a:["−2","−8","0","3"],c:1,e:"−8 is farther left on the number line than −2, 0, and 3."},
+  {id:30,grade:8,topic:"Slope",q:"What is the slope of the line through (1, 3) and (3, 7)?",a:["1","2","3","4"],c:1,e:"Slope = (7 − 3) ÷ (3 − 1) = 4 ÷ 2 = 2."},
+  {id:31,grade:9,topic:"Systems of equations",q:"If y = x + 1 and y = 5, what is x?",a:["3","4","5","6"],c:1,e:"Since 5 = x + 1, x = 4."},
+  {id:32,grade:10,topic:"Radicals",q:"What is √81?",a:["8","9","−9 only","40.5"],c:1,e:"The principal square root of 81 is 9."},
+  {id:33,grade:11,topic:"Probability",q:"A bag has 3 red and 2 blue counters. One counter is picked at random. What is the probability it is blue?",a:["2/3","3/5","2/5","1/5"],c:2,e:"There are 2 blue counters out of 5 total, so the probability is 2/5."},
+  {id:34,grade:12,topic:"Functions",q:"If g(x) = x² + 2x, what is g(−3)?",a:["3","−3","15","−15"],c:0,e:"g(−3) = (−3)² + 2(−3) = 9 − 6 = 3."}
+];
+
+let session = null;
+
+function showSection(id) {
+  ["home","quiz","results"].forEach(section => $(section).classList.toggle("hidden", section !== id));
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function shuffle(array) {
+  const copy = [...array];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i],copy[j]] = [copy[j],copy[i]];
+  }
+  return copy;
+}
+
+function startAssessment() {
+  const start = Number($("startGrade").value);
+  session = {
+    startGrade: start,
+    currentLevel: start,
+    asked: [],
+    answers: [],
+    topicStats: {},
+    correct: 0,
+    total: 0,
+    maxQuestions: 12
+  };
+  showSection("quiz");
+  renderQuestion();
+}
+
+function chooseQuestion() {
+  const available = questions.filter(q => !session.asked.includes(q.id));
+  if (!available.length) return null;
+
+  // Keep the next item near the current estimated level.
+  const ranked = available.map(q => ({
+    q,
+    distance: Math.abs(q.grade - session.currentLevel)
+  })).sort((a,b) => a.distance - b.distance);
+
+  // Pick among nearby items to add variety instead of always taking the same one.
+  const nearby = ranked.filter(item => item.distance <= 2).slice(0, 7);
+  return shuffle(nearby.length ? nearby : ranked).map(item => item.q)[0];
+}
+
+function renderQuestion() {
+  if (session.total >= session.maxQuestions || session.asked.length >= questions.length) {
+    finishAssessment();
+    return;
+  }
+
+  const q = chooseQuestion();
+  if (!q) {
+    finishAssessment();
+    return;
+  }
+
+  session.currentQuestion = q;
+  session.asked.push(q.id);
+  $("questionCounter").textContent = `Question ${session.total + 1} of up to ${session.maxQuestions}`;
+  $("levelLabel").textContent = `Exploring ${gradeName(q.grade)}`;
+  $("progressBar").style.width = `${(session.total / session.maxQuestions) * 100}%`;
+  $("topicLabel").textContent = q.topic;
+  $("questionText").textContent = q.q;
+  $("answers").innerHTML = "";
+  $("feedback").className = "hidden";
+  $("feedback").innerHTML = "";
+  $("nextButton").classList.add("hidden");
+
+  q.a.forEach((answer,index) => {
+    const button = document.createElement("button");
+    button.className = "answer";
+    button.textContent = `${String.fromCharCode(65 + index)}. ${answer}`;
+    button.addEventListener("click", () => selectAnswer(index));
+    $("answers").appendChild(button);
+  });
+}
+
+function selectAnswer(index) {
+  const q = session.currentQuestion;
+  const buttons = [...$("answers").querySelectorAll("button")];
+  if (buttons.some(button => button.disabled)) return;
+
+  const correct = index === q.c;
+  buttons.forEach((button,i) => {
+    button.disabled = true;
+    if (i === q.c) button.classList.add("correct");
+    else if (i === index) button.classList.add("incorrect");
+  });
+
+  session.total++;
+  if (correct) session.correct++;
+  session.answers.push({id:q.id, grade:q.grade, topic:q.topic, correct});
+  if (!session.topicStats[q.topic]) session.topicStats[q.topic] = {correct:0,total:0};
+  session.topicStats[q.topic].total++;
+  if (correct) session.topicStats[q.topic].correct++;
+
+  // Basic adaptive rule for the prototype, not a calibrated assessment model.
+  if (correct) session.currentLevel = Math.min(12, Math.max(session.currentLevel, q.grade) + 0.5);
+  else session.currentLevel = Math.max(0, Math.min(session.currentLevel, q.grade) - 0.5);
+
+  $("feedback").className = `feedback ${correct ? "good" : "bad"}`;
+  const title = document.createElement("strong");
+  title.textContent = correct ? "Correct!" : "Not quite.";
+  const explanation = document.createElement("p");
+  explanation.textContent = q.e;
+  $("feedback").append(title, explanation);
+  $("feedback").classList.remove("hidden");
+  $("progressBar").style.width = `${(session.total / session.maxQuestions) * 100}%`;
+
+  $("nextButton").textContent = session.total >= session.maxQuestions ? "See my results →" : "Next question →";
+  $("nextButton").classList.remove("hidden");
+}
+
+$("nextButton").addEventListener("click", renderQuestion);
+$("startButton").addEventListener("click", startAssessment);
+$("quitButton").addEventListener("click", () => {
+  if (session && session.total > 0) {
+    if (confirm("End this assessment and view your results so far?")) finishAssessment();
+  } else {
+    showSection("home");
+  }
+});
+
+function finishAssessment() {
+  if (!session || session.total === 0) {
+    showSection("home");
+    return;
+  }
+
+  const percent = Math.round((session.correct / session.total) * 100);
+  $("resultPercent").textContent = `${percent}%`;
+  $("resultBar").style.width = `${percent}%`;
+  $("resultIntro").textContent = `You answered ${session.correct} out of ${session.total} questions correctly. Your starting point was ${gradeName(session.startGrade)}.`;
+  $("levelSummary").textContent = "Questions in this short session came from several approximate grade levels. Your results are a snapshot of these questions only, not a confirmed grade-level placement.";
+
+  $("topicResults").innerHTML = "";
+  Object.entries(session.topicStats).sort((a,b) => {
+    return (a[1].correct/a[1].total) - (b[1].correct/b[1].total);
+  }).forEach(([topic,stats]) => {
+    const row = document.createElement("div");
+    row.className = "topic-row";
+    const heading = document.createElement("div");
+    heading.className = "topic-heading";
+    const name = document.createElement("strong");
+    name.textContent = topic;
+    const score = document.createElement("span");
+    score.textContent = `${stats.correct}/${stats.total} correct`;
+    heading.append(name,score);
+    const track = document.createElement("div");
+    track.className = "mini-track";
+    const fill = document.createElement("div");
+    fill.style.width = `${Math.round(stats.correct/stats.total*100)}%`;
+    track.appendChild(fill);
+    row.append(heading,track);
+    $("topicResults").appendChild(row);
+  });
+
+  $("recommendations").innerHTML = "";
+  const topics = Object.entries(session.topicStats).sort((a,b) =>
+    (a[1].correct/a[1].total) - (b[1].correct/b[1].total)
+  );
+  if (topics.length) {
+    const weakest = topics[0];
+    const p = document.createElement("p");
+    p.textContent = `Consider practicing ${weakest[0].toLowerCase()} next. You answered ${weakest[1].correct} out of ${weakest[1].total} questions correctly in that topic during this session.`;
+    $("recommendations").appendChild(p);
+    const p2 = document.createElement("p");
+    p2.textContent = "For a more useful picture of your skills, take additional assessments with a wider variety of questions. One or two questions cannot establish mastery of a topic.";
+    $("recommendations").appendChild(p2);
+  }
+
+  saveHistory({
+    date: new Date().toLocaleDateString(),
+    grade: session.startGrade,
+    correct: session.correct,
+    total: session.total,
+    percent
+  });
+  showSection("results");
+}
+
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem("atlasGrowthHistory") || "[]"); }
+  catch { return []; }
+}
+
+function saveHistory(result) {
+  try {
+    const history = getHistory();
+    history.unshift(result);
+    localStorage.setItem("atlasGrowthHistory", JSON.stringify(history.slice(0,10)));
+  } catch (error) {
+    console.warn("Could not save local history.", error);
+  }
+  renderHistory();
+}
+
+function renderHistory() {
+  const history = getHistory();
+  $("history").innerHTML = "";
+  $("clearHistory").classList.toggle("hidden", history.length === 0);
+  if (!history.length) {
+    const p = document.createElement("p");
+    p.className = "small";
+    p.textContent = "No assessments completed yet.";
+    $("history").appendChild(p);
+    return;
+  }
+  history.forEach(item => {
+    const row = document.createElement("p");
+    row.textContent = `${item.date} · Starting grade: ${gradeName(item.grade)} · ${item.correct}/${item.total} correct (${item.percent}%)`;
+    $("history").appendChild(row);
+  });
+}
+
+$("clearHistory").addEventListener("click", () => {
+  if (confirm("Clear the assessment history saved in this browser?")) {
+    localStorage.removeItem("atlasGrowthHistory");
+    renderHistory();
+  }
+});
+
+$("againButton").addEventListener("click", () => {
+  $("startGrade").value = String(session ? session.startGrade : 6);
+  startAssessment();
+});
+$("homeButton").addEventListener("click", () => {
+  renderHistory();
+  showSection("home");
+});
+
+fillGrades();
+renderHistory();
+</script>
 </body>
 </html>
